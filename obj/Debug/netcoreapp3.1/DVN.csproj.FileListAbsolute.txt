@@ -62,3 +62,5 @@ C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\About\Index.cs
 C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Contact\Index.cshtml.g.cs
 C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\News\Index.cshtml.g.cs
 C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\RegisterProduct\Index.cshtml.g.cs
+C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Customer\Register.cshtml.g.cs
+C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Customer\Login.cshtml.g.cs

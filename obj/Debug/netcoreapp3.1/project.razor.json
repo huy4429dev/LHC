@@ -14397,6 +14397,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Customer\\Login.cshtml",
+      "TargetPath": "Views\\Customer\\Login.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\RegisterProduct\\Index.cshtml",
       "TargetPath": "Views\\RegisterProduct\\Index.cshtml",
       "FileKind": "mvc"
@@ -14444,6 +14449,11 @@
     {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Shared\\_LayoutAdmin.cshtml",
       "TargetPath": "Views\\Shared\\_LayoutAdmin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Customer\\Register.cshtml",
+      "TargetPath": "Views\\Customer\\Register.cshtml",
       "FileKind": "mvc"
     },
     {

@@ -3,80 +3,6 @@
 
     ViewData["CurrentPage"] = "contact";
 }
- <!-- Breadcrumb Section Begin -->
-    <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./index.html"><i class="fa fa-home"></i> Trang chủ</a>
-                        <span>Đăng kí</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb Section Begin -->
-
-    <!-- Shopping Cart Section Begin -->
-    <section class="checkout-section spad">
-        <div class="container">
-            <form action="#" class="checkout-form">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="#" class="content-btn">Bấm vào đây để <b>đăng nhập</b></a>
-                        </div>
-                        <h4>Thông tin đăng kí</h4>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="fir">Họ<span>*</span></label>
-                                <input type="text" id="fir">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="last">Tên<span>*</span></label>
-                                <input type="text" id="last">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun-name">Địa chỉ</label>
-                                <input type="text" id="cun-name">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun">Số điện thoại<span>*</span></label>
-                                <input type="text" id="cun">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="street">Địa chỉ email<span>*</span></label>
-                                <input type="text" id="street" class="street-first">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="zip">Diện tích mái cần lắp đặt<span>*</span></label>
-                                <input type="text" id="zip">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <input type="text" placeholder="Vui lòng đăng nhập trước khi đăng kí sử dụng dịch vụ">
-                        </div>
-                        <div class="place-order">
-                            <h4>Giá thành dự kiến</h4>
-                            <div class="order-total">
-                                <ul class="order-table">
-                                    <li class="total-price">Tổng <span>320.000.000</span></li>
-                                </ul>
-                                <div class="order-btn">
-                                    <button type="submit" class="site-btn place-btn">Đăng kí</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Header End -->
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
@@ -234,17 +160,43 @@
                         <div class="leave-comment">
                             <h4>Liên hệ ngay với chúng tôi</h4>
                             <p>Đội ngũ tư vấn của chúng tôi luôn trực 24/24 để giải đáp thắc mắc của bạn</p>
-                            <form action="#" class="comment-form">
+                            <form id="form-contact" action="/lien-he" method="POST" class="comment-form">
+
+                                @* show notification create customer success *@
+
+                                @if (ViewData["SendContactSuccess"] != null)
+                                {
+                                    <div class="alert alert-success">
+                                        @ViewData["SendContactSuccess"]
+                                    </div>
+                                }
+                                @* show error validate *@
+
+                                @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        <a class="close" data-dismiss="alert">×</a>
+                                        @foreach (var modelError in Html.ViewData.ModelState.SelectMany(keyValuePair =>
+                                        keyValuePair.Value.Errors))
+                                        {
+                                            <p>@modelError.ErrorMessage</p>
+                                        }
+                                    </div>
+                                }
+
+                                <div id="alert-contact" class="pb-4">
+                                    Gửi liên hệ thành công
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="Tên của bạn">
+                                        <input name="FullName"  type="text" placeholder="Tên của bạn" id="fullname-contact">
                                     </div>
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="Email của bạn">
+                                        <input  name="Email" type="text" placeholder="Email của bạn" id="email-contact">
                                     </div>
                                     <div class="col-lg-12">
-                                        <textarea placeholder="Nội dung cần giả đáp"></textarea>
-                                        <button type="submit" class="site-btn">Đồng ý</button>
+                                        <textarea name="Content"  placeholder="Nội dung cần giả đáp" id="content-contact"></textarea>
+                                        <button type="button" class="site-btn"  id="send-contact">Đồng ý</button>
                                     </div>
                                 </div>
                             </form>
@@ -255,3 +207,53 @@
         </div>
     </section>
     <!-- Contact Section End -->
+
+@section Script{
+            <script>
+            
+            let btnSendContact = document.querySelector('#send-contact');
+            let inputEmailSendContact = document.querySelector('#email-contact');
+            let inputContentSendContact = document.querySelector('#content-contact');
+            let inputFullNameSendContact = document.querySelector('#fullname-contact');
+            let alertSendContact = document.querySelector('#alert-contact');
+            let formContact = document.querySelector('#form-contact');
+            btnSendContact.addEventListener('click', customerSendContact);
+
+
+
+            function customerSendContact() {
+
+            const data = { email: inputEmailSendContact.value , fullname: inputFullNameSendContact.value, content: inputContentSendContact.value};
+
+
+            alertSendContact.style.color = '#343a40 ';
+            alertSendContact.innerHTML = loader;
+
+            fetch('/lien-he', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.success != null) {
+                alertSendContact.style.color = 'green';
+                alertSendContact.textContent = data.success;
+                formContact.reset();
+            }
+            else {
+            alertSendContact.style.color = 'red';
+            alertSendContact.textContent = data.error[0].errorMessage;
+            }
+            })
+            .catch((error) => {
+            console.error('Error:', error);
+            })
+            }
+
+
+
+        </script>
+}

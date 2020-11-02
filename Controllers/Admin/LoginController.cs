@@ -8,7 +8,6 @@ using DVN.Services;
 using DVN.ViewModels;
 using DVN.Extension;
 using Microsoft.AspNetCore.Http;
-
 namespace DVN.Controllers
 {
     public class LoginController : Controller

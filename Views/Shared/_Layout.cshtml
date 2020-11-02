@@ -1,5 +1,12 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var Customer = HttpContextAccessor.HttpContext.Session.Get<Customer>("customer");
+}
+
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Fashi Template">
@@ -10,229 +17,240 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <!-- Css Styles -->
-    <link rel="stylesheet" href="assets/page/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/themify-icons.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="assets/page/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/themify-icons.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/page/css/style.css" type="text/css">
     <style>
         .fix-center {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         }
     </style>
-       @if(IsSectionDefined("Css"))
-            {
-                @RenderSection("Css", required:true)
-            }
+    @if (IsSectionDefined("Css"))
+    {
+        @RenderSection("Css", required:true)
+    }
 
-</head>
- <body>
-    <!-- Header Section Begin -->
-    <header class="header-section">
-        <div class="header-top">
-            <div class="container">
-                <div class="ht-left">
-                    <div class="mail-service">
-                        <i class=" fa fa-envelope"></i>
-                        cuongtetan@gmail.com
+    </head>
+
+    <body>
+        <!-- Header Section Begin -->
+        <header class="header-section">
+            <div class="header-top">
+                <div class="container">
+                    <div class="ht-left">
+                        <div class="mail-service">
+                            <i class=" fa fa-envelope"></i>
+                            cuongtetan@gmail.com
+                        </div>
+                        <div class="phone-service">
+                            <i class=" fa fa-phone"></i>
+                            +848.888.5576
+                        </div>
                     </div>
-                    <div class="phone-service">
-                        <i class=" fa fa-phone"></i>
-                        +848.888.5576
-                    </div>
-                </div>
-                <div class="ht-right">
-                    <a href="./login.html" class="login-panel"><i class="fa fa-user"></i>Đăng nhập</a>
-                    <div class="top-social">
-                        <a href="#"><i class="ti-facebook"></i></a>
-                        <a href="#"><i class="ti-twitter-alt"></i></a>
-                        <a href="#"><i class="ti-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="inner-header">
-                <div class="row">
-                    <div class="col-lg-2 col-md-2">
-                        
-                    </div>
-                    <div class="col-lg-7 col-md-7">
-                        <div class="logo">
-                            <a href="./index.html">
-                                <img src="assets/page/img/logo.jpg" alt="">
-                            </a>
+                    <div class="ht-right">
+                        <a href="/khach-hang/dang-nhap" class="login-panel"><i class="fa fa-user"></i>@(Customer?.Username
+                                ?? "Đăng nhập")</a>
+                        <div class="top-social">
+                            <a href="#"><i class="ti-facebook"></i></a>
+                            <a href="#"><i class="ti-twitter-alt"></i></a>
+                            <a href="#"><i class="ti-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="nav-item">
             <div class="container">
-                <div class="nav-depart">
-                    <div class="depart-btn">
-                        <i class="ti-menu"></i>
-                        <span>Người sử dụng</span>
-                        <ul class="depart-hover">
-                            <li class="active"><a href="./dangki.html">Đăng kí sử dụng</a></li>
-                            <li><a href="/dang-nhap">Đăng nhập</a></li>
-                            <li><a href="/hoadon.html">Kiểm tra hoá đơn</a></li>
-                            <li><a href="/register.html">Đăng kí tài khoản</a></li>
-                        </ul>
+                <div class="inner-header">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2">
+
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="logo">
+                                <a href="/">
+                                    <img src="/assets/page/img/logo.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <nav class="nav-menu mobile-menu">
-                    <ul>
-                        <li class="@((string)ViewData["CurrentPage"] == "home"  ? "active" : "")" ><a href="/">Trang Chủ</a></li>
-                        <li class="@((string)ViewData["CurrentPage"] == "about"  ? "active" : "")" ><a href="/gioi-thieu">Giới thiệu</a></li>
-                        <li class="@((string)ViewData["CurrentPage"] == "registerProduct"  ? "active" : "")" ><a href="/dang-ky-su-dung">Đăng kí sử dụng</a></li>
-                        <li class="@((string)ViewData["CurrentPage"] == "contact"  ? "active" : "")" ><a href="/lien-he">Liên Hệ</a></li>
-                        <li class="@((string)ViewData["CurrentPage"] == "news"  ? "active" : "")" ><a href="/tin-tuc">Tin tức</a>
-                        </li>
-                    </ul>
-                </nav>
-                <div id="mobile-menu-wrap"></div>
             </div>
-        </div>
-    </header>
-    <!-- Header End -->
-        @RenderBody()
-    <!-- Footer Section Begin -->
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="footer-left">
-                        <div class="footer-logo">
-                            <a href="#"><img src="assets/page/img/footer-logo.png" alt=""></a>
+            <div class="nav-item">
+                <div class="container">
+                    <div class="nav-depart">
+                        <div class="depart-btn">
+                            <i class="ti-menu"></i>
+                            <span>Người sử dụng</span>
+                            <ul class="depart-hover">
+                                <li class="active"><a href="./dangki.html">Đăng kí sử dụng</a></li>
+                                <li><a href="/dang-nhap">Đăng nhập</a></li>
+                                <li><a href="/hoadon.html">Kiểm tra hoá đơn</a></li>
+                                <li><a href="/register.html">Đăng kí tài khoản</a></li>
+                            </ul>
                         </div>
+                    </div>
+                    <nav class="nav-menu mobile-menu">
                         <ul>
-                            <li>Trụ sở chính: Công ty Điện lực Điện Biên -  Số 904 tổ 9 - Phường Mường Thanh - TP Điện Biên Phủ - Tỉnh Điện Biên</li>
-                            <li>Điện thoại: 084.888.5576</li>
-                            <li>Email: Cuongtetan@gmail.com</li>
+                            <li class="@((string)ViewData["CurrentPage"] == "home"  ? "active" : "")"><a href="/">Trang
+                                    Chủ</a></li>
+                            <li class="@((string)ViewData["CurrentPage"] == "about"  ? "active" : "")"><a
+                                href="/gioi-thieu">Giới thiệu</a></li>
+                            <li class="@((string)ViewData["CurrentPage"] == "registerProduct"  ? "active" : "")"><a
+                                href="/dang-ky-su-dung">Đăng kí sử dụng</a></li>
+                            <li class="@((string)ViewData["CurrentPage"] == "contact"  ? "active" : "")"><a
+                                href="/lien-he">Liên Hệ</a></li>
+                            <li class="@((string)ViewData["CurrentPage"] == "news"  ? "active" : "")"><a href="/tin-tuc">Tin
+                                    tức</a>
+                            </li>
                         </ul>
-                        <div class="footer-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
+                    </nav>
+                    <div id="mobile-menu-wrap"></div>
+                </div>
+            </div>
+        </header>
+        <!-- Header End -->
+        @RenderBody()
+        <!-- Footer Section Begin -->
+        <footer class="footer-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="footer-left">
+                            <div class="footer-logo">
+                                <a href="#"><img src="/assets/page/img/footer-logo.png" alt=""></a>
+                            </div>
+                            <ul>
+                                <li>Trụ sở chính: Công ty Điện lực Điện Biên - Số 904 tổ 9 - Phường Mường Thanh - TP Điện
+                                    Biên Phủ - Tỉnh Điện Biên</li>
+                                <li>Điện thoại: 084.888.5576</li>
+                                <li>Email: Cuongtetan@gmail.com</li>
+                            </ul>
+                            <div class="footer-social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 offset-lg-1">
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="footer-widget">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="newslatter-item">
+                            <h5>Giải đáp thắc mắc</h5>
+                            <p>Hãy để email của bạn tại đây, chúng tôi sẽ liên lac với bạn sớm nhất có thể</p>
+                            <form class="subscribe-form">
+                                <input id="send-email" type="text" placeholder="Enter Your Mail">
+                                <button id="btn-send-email" type="button" data-toggle="modal"
+                                data-target="#modalCustomerSendEmail">Gửi Email</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 offset-lg-1">
-                </div>
-                <div class="col-lg-2">
-                    <div class="footer-widget">
+            </div>
+        </footer>
+        <div class="modal fade" id="modalCustomerSendEmail" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="newslatter-item">
-                        <h5>Giải đáp thắc mắc</h5>
-                        <p>Hãy để email của bạn tại đây, chúng tôi sẽ liên lac với bạn sớm nhất có thể</p>
-                        <form class="subscribe-form">
-                            <input id="send-email" type="text" placeholder="Enter Your Mail">
-                            <button id="btn-send-email" type="button" data-toggle="modal" data-target="#modalCustomerSendEmail">Gửi Email</button>
-                        </form>
+                    <div id="alert-send-mail" class="modal-body">
+                    </div>
+                    <div class="modal-footer">
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <div class="modal fade" id="modalCustomerSendEmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Thông báo</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div id="alert-send-mail" class="modal-body">
-        </div>
-        <div class="modal-footer">
-        </div>
-        </div>
-    </div>
-    </div>
 
 
 
-    <!-- Footer Section End -->
+        <!-- Footer Section End -->
 
-    <!-- Js Plugins -->
-    <script src="assets/page/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/page/js/bootstrap.min.js"></script>
-    <script src="assets/page/js/jquery-ui.min.js"></script>
-    <script src="assets/page/js/jquery.countdown.min.js"></script>
-    <script src="assets/page/js/jquery.nice-select.min.js"></script>
-    <script src="assets/page/js/jquery.zoom.min.js"></script>
-    <script src="assets/page/js/jquery.dd.min.js"></script>
-    <script src="assets/page/js/jquery.slicknav.js"></script>
-    <script src="assets/page/js/owl.carousel.min.js"></script>
-    <script src="assets/page/js/main.js"></script>
-    <script>
-        
-        const inputSendEmail = document.querySelector('#send-email');
-        const btnSendEmail = document.querySelector('#btn-send-email');
-        const formSubcrice = document.querySelector('.subscribe-form');
-        const alertSendMail = document.querySelector('#alert-send-mail');
-        
-        let loader = `<div class="fix-center    ">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </div>`;
+        <!-- Js Plugins -->
+        <script src="/assets/page/js/jquery-3.3.1.min.js"></script>
+        <script src="/assets/page/js/bootstrap.min.js"></script>
+        <script src="/assets/page/js/jquery-ui.min.js"></script>
+        <script src="/assets/page/js/jquery.countdown.min.js"></script>
+        <script src="/assets/page/js/jquery.nice-select.min.js"></script>
+        <script src="/assets/page/js/jquery.zoom.min.js"></script>
+        <script src="/assets/page/js/jquery.dd.min.js"></script>
+        <script src="/assets/page/js/jquery.slicknav.js"></script>
+        <script src="/assets/page/js/owl.carousel.min.js"></script>
+        <script src="/assets/page/js/main.js"></script>
+        <script>
 
-        btnSendEmail.addEventListener('click',customerSendEmail)
-        formSubcrice.addEventListener('submit',function (event){
+            const inputSendEmail = document.querySelector('#send-email');
+            const btnSendEmail = document.querySelector('#btn-send-email');
+            const formSubcrice = document.querySelector('.subscribe-form');
+            const alertSendMail = document.querySelector('#alert-send-mail');
+
+            let loader = `<div class="fix-center    ">
+            <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+            </div>
+            </div>`;
+
+            btnSendEmail.addEventListener('click', customerSendEmail)
+            formSubcrice.addEventListener('submit', function (event) {
             event.preventDefault();
-             $('#modalCustomerSendEmail').modal('show');
+            $('#modalCustomerSendEmail').modal('show');
             customerSendEmail();
-        })
+            })
 
 
-        function customerSendEmail(){
+            function customerSendEmail() {
 
-                const data = { email: inputSendEmail.value};
-                alertSendMail.style.color = '#343a40 ';
-                alertSendMail.innerHTML = loader;
-                
-                fetch('/khach-hang/gui-email', {
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.success != null){
-                      alertSendMail.style.color = 'green';
-                      alertSendMail.textContent = data.success;
-                    }
-                    else{
-                      alertSendMail.style.color = 'red';
-                      alertSendMail.textContent = data.error[0].errorMessage;
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                })
-        }
-        
+            const data = { email: inputSendEmail.value };
+            alertSendMail.style.color = '#343a40 ';
+            alertSendMail.innerHTML = loader;
 
-
-    </script>
-             @if(IsSectionDefined("Script"))
-            {
-                @RenderSection("Script", required:true)
+            fetch('/khach-hang/gui-email', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.success != null) {
+            alertSendMail.style.color = 'green';
+            alertSendMail.textContent = data.success;
             }
-    
+            else {
+            alertSendMail.style.color = 'red';
+            alertSendMail.textContent = data.error[0].errorMessage;
+            }
+            })
+            .catch((error) => {
+            console.error('Error:', error);
+            })
+            }
 
-</body>
-</html>
+
+
+        </script>
+        @if (IsSectionDefined("Script"))
+    {
+        @RenderSection("Script", required:true)
+    }
+
+
+    </body>
+
+    </html>

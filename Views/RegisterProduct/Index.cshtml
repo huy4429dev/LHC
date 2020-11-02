@@ -1,78 +1,132 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     Layout = "_Layout";
     ViewData["CurrentPage"] = "registerProduct";
+    var Customer = HttpContextAccessor.HttpContext.Session.Get<Customer>("customer");
+    var CustomerInfo = ViewData["customerInfo"] as Customer;
 }
 
- <!-- Breadcrumb Section Begin -->
-    <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./index.html"><i class="fa fa-home"></i> Trang chủ</a>
-                        <span>Đăng kí</span>
-                    </div>
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a href="/dang-ky-su-dung"><i class="fa fa-home"></i> Trang chủ</a>
+                    <span>Đăng kí</span>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb Section Begin -->
+</div>
+<!-- Breadcrumb Section Begin -->
 
-    <!-- Shopping Cart Section Begin -->
-    <section class="checkout-section spad">
-        <div class="container">
-            <form action="#" class="checkout-form">
-                <div class="row">
-                    <div class="col-lg-6">
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad">
+    <div class="container">
+        <form action="/dang-ky-su-dung" method="POST" class="checkout-form">
+            @* show notification create customer success *@
+
+            @if (ViewData["RegisterProductSuccess"] != null)
+            {
+                <div class="alert alert-success">
+                    @ViewData["RegisterProductSuccess"]
+                </div>
+            }
+            @* show error validate *@
+
+            @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+            {
+                <div class="alert alert-danger" role="alert">
+                    <a class="close" data-dismiss="alert">×</a>
+                    @foreach (var modelError in Html.ViewData.ModelState.SelectMany(keyValuePair =>
+                    keyValuePair.Value.Errors))
+                    {
+                        <p>@modelError.ErrorMessage</p>
+                    }
+                </div>
+            }
+            <div class="row">
+                <div class="col-lg-6">
+                    @if (Customer == null)
+                    {
                         <div class="checkout-content">
-                            <a href="#" class="content-btn">Bấm vào đây để <b>đăng nhập</b></a>
+                            <a href="/khach-hang/dang-nhap" class="content-btn">Bấm vào đây để <b>đăng nhập</b></a>
                         </div>
-                        <h4>Thông tin đăng kí</h4>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="fir">Họ<span>*</span></label>
-                                <input type="text" id="fir">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="last">Tên<span>*</span></label>
-                                <input type="text" id="last">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun-name">Địa chỉ</label>
-                                <input type="text" id="cun-name">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun">Số điện thoại<span>*</span></label>
-                                <input type="text" id="cun">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="street">Địa chỉ email<span>*</span></label>
-                                <input type="text" id="street" class="street-first">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="zip">Diện tích mái cần lắp đặt<span>*</span></label>
-                                <input type="text" id="zip">
-                            </div>
+                    }
+                    <h4>Thông tin đăng kí</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="fir">Họ<span>*</span></label>
+                            <input type="text" id="fir" name="FirstName" value="@(CustomerInfo?.FirstName)">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="last">Tên<span>*</span></label>
+                            <input type="text" id="last" name="LastName" value="@(CustomerInfo?.LastName)">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="cun-name">Địa chỉ</label>
+                            <input type="text" id="cun-name" name="Address" value="@(CustomerInfo?.Address)">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="cun">Số điện thoại<span>*</span></label>
+                            <input type="text" id="cun" name="Phone" value="@(CustomerInfo?.Phone)">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="street">Địa chỉ email<span>*</span></label>
+                            <input type="text" id="street" class="street-first" name="Email" value="@(CustomerInfo?.Email)">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="zip">Diện tích mái cần lắp đặt (m2) <span>*</span></label>
+                            <input type="text" id="zip" name="Roof">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="zip">Công suất (KW)<span>*</span></label>
+                            <input type="text" id="zip" name="Wattage">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="zip">Vị trí lắp đặt<span>*</span></label>
+                            <input type="text" id="zip" name="Place">
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                </div>
+                <div class="col-lg-6">
+                    @if (Customer == null)
+                    {
                         <div class="checkout-content">
-                            <input type="text" placeholder="Vui lòng đăng nhập trước khi đăng kí sử dụng dịch vụ">
+                            <span>Vui lòng đăng nhập trước khi đăng kí sử dụng dịch vụ</span>
                         </div>
-                        <div class="place-order">
-                            <h4>Giá thành dự kiến</h4>
-                            <div class="order-total">
-                                <ul class="order-table">
-                                    <li class="total-price">Tổng <span>320.000.000</span></li>
-                                </ul>
-                                <div class="order-btn">
-                                    <button type="submit" class="site-btn place-btn">Đăng kí</button>
-                                </div>
+                    }
+                    <div class="place-order">
+                        <h4>Giá thành dự kiến</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li class="total-price" >Tổng <span id="amount">0 đ</span></li>
+                            </ul>
+                            <div class="order-btn">
+                                <button type="submit" class="site-btn place-btn">Đăng kí</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </section>
-    <!-- Shopping Cart Section End -->
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+@section Script{
+    <script>
+        let wattage = document.querySelector('input[name="Wattage"]');
+        let amount = document.querySelector('#amount');
+        let unitPrice = @ViewData["unitPrice"];
+        wattage.addEventListener('keyup',function(){
+            let total = unitPrice * wattage.value;
+            amount.textContent = (total).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+
+           
+        })
+
+    </script>   
+}
