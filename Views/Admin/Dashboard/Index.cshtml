@@ -29,7 +29,7 @@
                                 <div class="card bg-primary text-white mb-4">
                                     <div class="card-body">Khách hàng mới</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">@(Statistic.NewCustomer)</a>
+                                        <a class=" text-white stretched-link" href="#">@(Statistic.NewCustomer)</a>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                         <div class="row">
                             <figure class="highcharts-figure">
                             <div id="container"></div>
-                            <p class="highcharts-description">
+                            <p class="highcharts-description" style="opacity: 0">
                                 Basic line chart showing trends in a dataset. This chart includes the
                                 <code>series-label</code> module, which adds a label to each line for
                                 enhanced readability.
@@ -71,47 +71,43 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table mr-1"></i>
-                                DataTable Example
+                                Log
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start date</th>
-                                                <th>Salary</th>
+                                                <th>Đối tượng</th>
+                                                <th>Hành động</th>
+                                                <th>Người thực hiện</th>
+                                                <th>Thời gian</th>
+                                                <th>Nội dung</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start date</th>
-                                                <th>Salary</th>
+                                                <th>Đối tượng</th>
+                                                <th>Hành động</th>
+                                                <th>Người thực hiện</th>
+                                                <th>Thời gian</th>
+                                                <th>Nội dung</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                             <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>$320,800</td>
+                                                <td>Liên hệ</td>
+                                                <td>Gửi</td>
+                                                <td>Nguyễn Văn X</td>
+                                                <td>11/11/2020</td>
+                                                <td>Đã gửi liên hệ đến hệ thống <a href="#">Xem liên hệ</a></td>
                                             </tr>
                                             <tr>
-                                                <td>Garrett Winters</td>
+                                                <td>Nguyễn Văn X</td>
                                                 <td>Accountant</td>
                                                 <td>Tokyo</td>
                                                 <td>63</td>
                                                 <td>2011/07/25</td>
-                                                <td>$170,750</td>
                                             </tr>
                                             <tr>
                                                 <td>Ashton Cox</td>
@@ -119,7 +115,6 @@
                                                 <td>San Francisco</td>
                                                 <td>66</td>
                                                 <td>2009/01/12</td>
-                                                <td>$86,000</td>
                                             </tr>
                                             <tr>
                                                 <td>Cedric Kelly</td>
@@ -127,7 +122,6 @@
                                                 <td>Edinburgh</td>
                                                 <td>22</td>
                                                 <td>2012/03/29</td>
-                                                <td>$433,060</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -136,8 +130,6 @@
                         </div>
                     </div>
                 </main>
-@StatisticOfDay
-
 @section Css {
     <style>
         .highcharts-figure, .highcharts-data-table table {
@@ -145,7 +137,7 @@
             }
 
             .highcharts-data-table table {
-                font-family: Verdana, sans-serif;
+                font-family: system-ui;
                 border-collapse: collapse;
                 border: 1px solid #EBEBEB;
                 margin: 10px auto;
@@ -153,10 +145,14 @@
                 width: 100%;
                 max-width: 500px;
             }
+            tspan {
+                font-family: system-ui;
+            }
             .highcharts-data-table caption {
             padding: 1em 0;
             font-size: 1.2em;
             color: #555;
+               font-family: system-ui;  
             }
             .highcharts-data-table th {
             font-weight: 600;
@@ -200,30 +196,35 @@
 
         let minDay = 1;
         let maxDay = timeNow.getDay() + 5;
-        console.log(maxDay);
         let dayHasData = 0;
 
-        @* for (const property in StatisticOfDay) {
+        for (const property in StatisticOfDay) {
+
+            StatisticOfDay[property].Data = [];
+
             if( StatisticOfDay[property].length > 0) {
-                StatisticOfDay[property].Data = [];
+
                 let previousDay = minDay;
-                StatisticOfDay[property].forEach(item => {
 
-                    if(item.Day - previousDay > 1){
-                        StatisticOfDay[property].Data = StatisticOfDay[property].Data.concat(new Array(item.Day - previousDay - 1).fill(0));
-                    }   
-                    else{
-                         StatisticOfDay[property].push(item.Count);
+                for(let i = 0 ; i < maxDay; i ++ ){
+                    let day = StatisticOfDay[property][i]?.Day;
+                    if(day - i > 1)
+                    { 
+                        console.log("index - ", i)
+                        StatisticOfDay[property].Data = StatisticOfDay[property].Data.concat(Array(day - i - 1).fill(0));
+                        StatisticOfDay[property].Data.push(StatisticOfDay[property][i].Count)
+                        maxDay -= day - i - 1 ; // continue this day
                     }
-                });
-            }
+                    else{
 
-            else{
-              
-                    StatisticOfDay[property].Data = new Array(maxDay).fill(0);
+                        StatisticOfDay[property].Data.push(StatisticOfDay[property][i]?.Count ?? 0);
+                    }
+                }
+            
             }
-               
-        } *@
+       
+        }
+
         console.log(StatisticOfDay);
 
 
@@ -234,7 +235,7 @@
             },
 
             subtitle: {
-                text: 'Source: thesolarfoundation.com'
+                text: ''
             },
 
             yAxis: {
@@ -265,21 +266,19 @@
             },
 
             series: [{
-                name: 'Installation',
-                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175,10,200]
+                name: 'Khách hàng mới',
+                data: StatisticOfDay.newCustomerOfDay.Data
             }, {
-                name: 'Manufacturing',
-                data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434,10,200]
+                name: 'Thắc mắc khiếu nại',
+                data: StatisticOfDay.newContactOfDay.Data
             }, {
-                name: 'Sales & Distribution',
-                data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387,10,200]
+                name: 'Đơn hàng mới',
+                data: StatisticOfDay.newOrderOfDay.Data
             }, {
-                name: 'Project Development',
-                data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-            }, {
-                name: 'Other',
-                data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-            }],
+                name: 'Đơn hàng hủy bỏ',
+                data: StatisticOfDay.orderDespose.Data
+            }
+            ],
 
             responsive: {
                 rules: [{

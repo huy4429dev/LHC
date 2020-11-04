@@ -45,6 +45,18 @@ namespace DVN.Admin.Controllers
             var Now = DateTime.Now;
             int CurrentMonth = Now.Month;
             int CurrentYeah = Now.Year;
+            int CurrentDay = Now.Day;
+
+            //
+
+            var selectedDates = Enumerable.Range(1, CurrentDay)
+              .Select(offset => new DataOfDay
+              {
+                  Day = offset,
+                  Count = 0
+              })
+              .ToList();
+
 
             // truy vấn khách hàng mới
             var queryCustomer = db.Customers.AsNoTracking();
@@ -90,7 +102,14 @@ namespace DVN.Admin.Controllers
                 Day = g.Key.Day,
                 Count = g.Count()
             })
+            .OrderBy(g => g.Day)
             .ToList();
+
+            newCustomerOfDay = newCustomerOfDay.Union(
+                       selectedDates
+                       .Where(e => !newCustomerOfDay.Select(x => x.Day).Contains(e.Day)))
+                       .OrderBy(x => x.Day)
+                       .ToList();
 
             // thống kê theo ngày lượng liên hệ hàng mới
 
@@ -107,6 +126,13 @@ namespace DVN.Admin.Controllers
            })
             .ToList();
 
+            newContactOfDay = newContactOfDay.Union(
+              selectedDates
+              .Where(e => !newContactOfDay.Select(x => x.Day).Contains(e.Day)))
+              .OrderBy(x => x.Day)
+              .ToList();
+
+
             // thống kê theo ngày lượng đơn hàng mới
 
             var newOrderOfDay = queryOrder.GroupBy(item => new
@@ -115,12 +141,18 @@ namespace DVN.Admin.Controllers
                 item.CreatTime.Month,
                 item.CreatTime.Day
             })
-       .Select(g => new DataOfDay
-       {
-           Day = g.Key.Day,
-           Count = g.Count()
-       })
+            .Select(g => new DataOfDay
+            {
+                Day = g.Key.Day,
+                Count = g.Count()
+            })
             .ToList();
+
+            newOrderOfDay = newOrderOfDay.Union(
+        selectedDates
+        .Where(e => !newOrderOfDay.Select(x => x.Day).Contains(e.Day)))
+        .OrderBy(x => x.Day)
+        .ToList();
 
             // thống kê theo ngày lượng đơn hủy
 
@@ -139,6 +171,11 @@ namespace DVN.Admin.Controllers
             })
             .ToList();
 
+            orderDespose = orderDespose.Union(
+                   selectedDates
+                   .Where(e => !orderDespose.Select(x => x.Day).Contains(e.Day)))
+                   .OrderBy(x => x.Day)
+                   .ToList();
 
             ViewData["Statistic"] = new DashboardViewModel
             {

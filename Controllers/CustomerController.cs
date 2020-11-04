@@ -146,7 +146,7 @@ namespace DVN.Controllers
         }
 
 
-        protected void SkipModelValidate(string keyword)
+        private void SkipModelValidate(string keyword)
         {
             if (ModelState != null)
             {
