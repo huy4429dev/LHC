@@ -14397,6 +14397,21 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Contact\\Index.cshtml",
+      "TargetPath": "Views\\Admin\\Contact\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Post\\Detail.cshtml",
+      "TargetPath": "Views\\Admin\\Post\\Detail.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Order\\Index.cshtml",
+      "TargetPath": "Views\\Admin\\Order\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Customer\\Login.cshtml",
       "TargetPath": "Views\\Customer\\Login.cshtml",
       "FileKind": "mvc"
@@ -14404,6 +14419,11 @@
     {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\RegisterProduct\\Index.cshtml",
       "TargetPath": "Views\\RegisterProduct\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\RegisterProduct\\Index.cshtml",
+      "TargetPath": "Views\\Admin\\RegisterProduct\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -14427,6 +14447,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Post\\Create.cshtml",
+      "TargetPath": "Views\\Admin\\Post\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\RegisterProduct\\Detail.cshtml",
+      "TargetPath": "Views\\Admin\\RegisterProduct\\Detail.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Shared\\_Layout.cshtml",
       "TargetPath": "Views\\Shared\\_Layout.cshtml",
       "FileKind": "mvc"
@@ -14434,6 +14464,11 @@
     {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Post\\Index.cshtml",
+      "TargetPath": "Views\\Admin\\Post\\Index.cshtml",
       "FileKind": "mvc"
     },
     {

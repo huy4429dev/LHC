@@ -26,7 +26,7 @@ namespace DVN.Models
         public DateTime BirthDate { get; set; }
         public bool Status { get; set; }
         public DateTime CreatTime { get; set; }
-        public virtual ICollection<New> News {get;set;}
+        public virtual ICollection<Post> Posts {get;set;}
 
     }
 

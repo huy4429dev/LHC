@@ -35,17 +35,13 @@ namespace DVN.Data
 
         }
 
-
         // User 
-
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerEmail> CustomerEmails { get; set; }
-        public DbSet<New> News { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<RegisterProduct> RegisterProducts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-
-
     }
 }
