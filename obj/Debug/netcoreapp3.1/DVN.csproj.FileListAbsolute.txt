@@ -72,3 +72,8 @@ C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Post\Det
 C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Admin\RegisterProduct\Index.cshtml.g.cs
 C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Order\Index.cshtml.g.cs
 C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Admin\RegisterProduct\Detail.cshtml.g.cs
+C:\Users\HUY 4\Desktop\C#\DVN\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Order\Detail.cshtml.g.cs
+C:\Users\HUY 4\Desktop\C#\DVN\bin\Debug\netcoreapp3.1\ClosedXML.dll
+C:\Users\HUY 4\Desktop\C#\DVN\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
+C:\Users\HUY 4\Desktop\C#\DVN\bin\Debug\netcoreapp3.1\ExcelNumberFormat.dll
+C:\Users\HUY 4\Desktop\C#\DVN\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll

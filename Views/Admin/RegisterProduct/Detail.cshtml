@@ -26,7 +26,7 @@
                             }
 <div class="row">
      <div class="col-8 mx-auto pb-5">
-            <form action="/admin/post/@Model.Id" method="post">
+            <form action="/admin/product/register/@Model.Id" method="post">
                 <div asp-validation-summary="All"></div>
                     @if(!String.IsNullOrEmpty(ViewBag.message)){
                         <div class="alert alert-success">@ViewBag.message</div>
@@ -44,10 +44,10 @@
                         <label for="form1"> <span style="width: 200px; display:inline-block"> Địa chỉ:</span> @Model.Customer.Address</label>
                     </div>
                     <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Diện tích lắp mái:</span> @Model.Roof</label>
+                        <label for="form1"> <span style="width: 200px; display:inline-block"> Diện tích lắp mái (m2):</span> @Model.Roof</label>
                     </div>
                     <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Công suất:</span> @Model.Wattage</label>
+                        <label for="form1"> <span style="width: 200px; display:inline-block"> Công suất (W):</span> @Model.Wattage</label>
                     </div>
                     <div class="md-form">
                         <label for="form1"> <span style="width: 200px; display:inline-block"> Vị trí lắp đặt:</span> @Model.Place</label>
@@ -61,10 +61,10 @@
 
                     <div class="md-form">
                         <label for="form1"> <span style="width: 200px; display:inline-block"> Trạng thái:</span></label>
-                        <select class="form-input">
-                            <option value="0" >Hủy</option>
-                            <option value="1" >Đang chờ</option>
-                            <option value="2" >Hoàn thành</option>
+                        <select class="form-input" asp-for="Status">
+                         @(Model.Status == RegisterProductStatus.Abort ? Html.Raw("<option value='0' selected >Hủy</option>") : Html.Raw(" <option value='0' >Hủy</option>"))  
+                         @(Model.Status == RegisterProductStatus.Pendding ? Html.Raw("<option value='1' selected >Đang chờ</option>") : Html.Raw(" <option value='1' >Đang chờ</option>"))  
+                         @(Model.Status == RegisterProductStatus.Success ? Html.Raw("<option value='2' selected >Đã xử lý</option>") : Html.Raw(" <option value='2' >Đã xử lý</option>"))  
                         </select>
                     </div>
                  

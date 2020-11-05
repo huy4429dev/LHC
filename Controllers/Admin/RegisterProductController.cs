@@ -25,23 +25,56 @@ namespace DVN.Admin.Controllers
         public IActionResult Index()
         {
             float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
-            
+
             var data = db.RegisterProducts.Include(x => x.Customer).ToList();
 
-            return View("/Views/Admin/RegisterProduct/Index.cshtml",data);
+            return View("/Views/Admin/RegisterProduct/Index.cshtml", data);
         }
 
         [HttpGet("{id}")]
         public IActionResult Detail(int id)
         {
             float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
-            
+
             var data = db.RegisterProducts.Include(x => x.Customer).FirstOrDefault(item => item.Id == id);
 
-            return View("/Views/Admin/RegisterProduct/Detail.cshtml",data);
+            return View("/Views/Admin/RegisterProduct/Detail.cshtml", data);
         }
 
-        
+        [HttpPost("{id}")]
+        public IActionResult Update(int id, [FromForm] RegisterProduct model)
+        {
+            var found = db.RegisterProducts.Find(id);
+            found.Status = model.Status;
+            db.SaveChanges();
+
+            if (found.Status == RegisterProductStatus.Abort)
+            {
+                TempData["message"] = "Đơn đăng ký và đơn hàng đã được hủy bỏ";
+            }
+            if (found.Status == RegisterProductStatus.Pendding)
+            {
+                TempData["message"] = "Đơn đăng ký và đơn hàng chuyển trạng thái chờ";
+            }
+            if (found.Status == RegisterProductStatus.Success)
+            { 
+                var foundOrder = db.Orders.FirstOrDefault(item => item.CustomerId == found.CustomerId);
+                if(foundOrder == null){
+                    db.Add(new Order{
+                        Amount = found.Amount,
+                        CustomerId = found.CustomerId,
+                        Status = true,
+                        CreatTime = DateTime.Now,
+                        UnitPrice = found.UnitPrice,
+                        UseValue = 0
+                    });
+                    db.SaveChanges();
+                }
+                TempData["message"] = "Đơn đăng ký đã được xử lý và thêm mới đơn hàng";
+            }
+
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
 
         [HttpPost]
         public IActionResult Create([FromForm] RegisterProductViewModel model)
@@ -81,7 +114,7 @@ namespace DVN.Admin.Controllers
                         Status = RegisterProductStatus.Pendding,
                         Wattage = model.Wattage,
                         UnitPrice = unitPrice,
-                        Amount = (float) unitPrice * model.Wattage * 10 / 100  +  unitPrice * model.Wattage  , // thanh tien
+                        Amount = (float)unitPrice * model.Wattage * 10 / 100 + unitPrice * model.Wattage, // thanh tien
                         CreatTime = DateTime.Now
 
                     });

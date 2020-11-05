@@ -1,5 +1,7 @@
 @{
     Layout = "_Layout";
+    
+    var posts = ViewData["post"] as List<Post>;
 
 }
     <!-- Hero Section Begin -->
@@ -107,69 +109,30 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="assets/page/img/latest-1.jpg" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
+                @foreach (var item in posts)
+                {
+                     <div class="col-lg-4 col-md-6">
+                        <div class="single-latest-blog">
+                            <img src="assets/page/img/latest-1.jpg" alt="">
+                            <div class="latest-text">
+                                <div class="tag-list">
+                                    <div class="tag-item">
+                                        <i class="fa fa-calendar-o"></i>
+                                        @item.CreatedAt.ToString("dd/MM/yyyy")
+                                    </div>
+                                    <div class="tag-item">
+                                        <div class="fb-like" data-href="xyz-@item.Id" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
+                                    </div>
                                 </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
+                                <a href="#">
+                                    <h4>@item.Title</h4>
+                                </a>
+                                <p>@item.Description</p>
                             </div>
-                            <a href="#">
-                                <h4>Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả</h4>
-                            </a>
-                            <p>Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="assets/page/img/latest-2.jpg" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả</h4>
-                            </a>
-                            <p>Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="assets/page/img/latest-3.jpg" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả</h4>
-                            </a>
-                            <p>Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn</p>
-                        </div>
-                    </div>
-                </div>
+                }
+               
             </div>
             <div class="benefit-items">
                 <div class="row">
@@ -210,3 +173,7 @@
             </div>
         </div>
     </section>
+    <div id="fb-root"></div>
+    @section Script{
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v8.0&appId=543121906576699&autoLogAppEvents=1" nonce="nCtKPJN1"></script>    
+    }

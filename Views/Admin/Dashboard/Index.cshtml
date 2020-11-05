@@ -195,7 +195,7 @@
         let StatisticOfDay = JSON.parse(data);
 
         let minDay = 1;
-        let maxDay = timeNow.getDay() + 5;
+        let maxDay = timeNow.getDay();
         let dayHasData = 0;
 
         for (const property in StatisticOfDay) {
