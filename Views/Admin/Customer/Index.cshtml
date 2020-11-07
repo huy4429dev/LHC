@@ -166,36 +166,36 @@
 
                <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Tài khoản (*):</label>
-                    <input type="text" class="form-control" id="recipient-name" name="username">
+                    <input type="text" class="form-control" id="recipient-name" name="username" value="@item.Username" disabled >
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Mật khẩu (*):</label>
-                    <input type="password" class="form-control" id="recipient-name" name="password">
+                    <input type="password" class="form-control" id="recipient-name" name="password"  value="******">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Họ (*):</label>
-                    <input type="text" class="form-control" id="recipient-name" name="FirstName">
+                    <input type="text" class="form-control" id="recipient-name" name="FirstName" value="@item.FirstName">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Tên (*):</label>
-                    <input type="text" class="form-control" id="recipient-name" name="LastName">
+                    <input type="text" class="form-control" id="recipient-name" name="LastName" value="@item.LastName" >
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Điện thoại:</label>
-                    <input type="text" class="form-control" id="recipient-name" name="Phone">
+                    <input type="text" class="form-control" id="recipient-name" name="Phone" value="@item.Phone">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Email:</label>
-                    <input type="text" class="form-control" id="recipient-name" name="Email">
+                    <input type="text" class="form-control" id="recipient-name" name="Email" value="@item.Email">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Ngày sinh:</label>
-                    <input type="text" class="form-control" id="datepicker" name="BirthDate">
+                    <input type="text" class="form-control" id="datepicker" name="BirthDate" value="@item.BirthDate">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save change</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
             </div>
         </form>
      </div>
@@ -212,13 +212,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Customer</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Xóa khách hàng</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                You want delete Customer ?
+                Bạn chắc chắn xóa khách hàng này không ?
             </div>
             <div class="modal-footer">
                       <form method="Post" action="/admin/customer/delete/@(item.Id)">

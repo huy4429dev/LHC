@@ -14402,6 +14402,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Customer\\CheckOrder.cshtml",
+      "TargetPath": "Views\\Customer\\CheckOrder.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Post\\Detail.cshtml",
       "TargetPath": "Views\\Admin\\Post\\Detail.cshtml",
       "FileKind": "mvc"
@@ -14469,6 +14474,11 @@
     {
       "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Post\\Index.cshtml",
       "TargetPath": "Views\\Admin\\Post\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HUY 4\\Desktop\\C#\\DVN\\Views\\Admin\\Report\\Revenue.cshtml",
+      "TargetPath": "Views\\Admin\\Report\\Revenue.cshtml",
       "FileKind": "mvc"
     },
     {

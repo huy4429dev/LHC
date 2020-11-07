@@ -73,7 +73,7 @@ namespace DVN.Admin.Controllers
                 currentRow++;
                 worksheet.Cell(currentRow, 1).Value = order.Id;
                 worksheet.Cell(currentRow, 2).Value = order.Customer.FullName;
-                worksheet.Cell(currentRow, 3).Value = order.Customer.Phone.ToString();
+                worksheet.Cell(currentRow, 3).Value = order.Customer.Phone + "\\";
                 worksheet.Cell(currentRow, 4).Value = order.Customer.Email;
                 worksheet.Cell(currentRow, 5).Value = order.Customer.Address;
                 worksheet.Cell(currentRow, 7).Value = order.UnitPrice;

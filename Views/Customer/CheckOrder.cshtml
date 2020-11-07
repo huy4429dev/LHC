@@ -1,0 +1,84 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    Layout = "_Layout";
+    ViewData["CurrentPage"] = "checkOrder";
+    var Customer = HttpContextAccessor.HttpContext.Session.Get<Customer>("customer");
+    var CustomerInfo = ViewData["customerInfo"] as Customer;
+}
+@model List<Order>;
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="#"><i class="fa fa-home"></i>Trang chủ</a>
+                    <span>Hóa đơn</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Form Section Begin -->
+<!-- Shopping Cart Section Begin -->
+
+@if (Customer == null)
+{
+    <div class="checkout-content">
+        <a href="/khach-hang/dang-nhap" class="content-btn">Bấm vào đây để <b>đăng nhập</b></a>
+    </div>
+}
+
+else
+{
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cart-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Họ và tên</th>
+                                    <th class="p-name">Địa chỉ</th>
+                                    <th>SĐT</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Số tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="cart-name first-row">@item.Customer.FullName</td>
+                                        <td class="cart-address first-row">
+                                            @item.Customer.Address
+                                        </td>
+                                        <td class="p-price first-row">@item.Customer.Address</td>
+                                        <td class="qua-col first-row">@item.Customer.CreatTime.ToString("dd/MM/yyyy")</td>
+                                        <td class="total-price first-row">@item.Amount.ToString("N0") VND</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-4 offset-lg-4">
+                            <div class="proceed-checkout">
+                                <ul>
+                                    <li class="vat">VAT(10%) <span>@((Model.Sum(item => item.Amount) + Model.Sum(item => item.Amount) * 10 / 100).ToString("N0")) VND</span></li>
+                                    <li class="cart-total">Total <span>@(Model.Sum(item => item.Amount).ToString("N0")) VND </span></li>
+                                </ul>
+                                <a href="/khach-hang/xuat-hoa-don" class="proceed-btn">In hóa đơn</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<!-- Shopping Cart Section End -->

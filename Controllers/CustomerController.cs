@@ -8,6 +8,10 @@ using DVN.Services;
 using DVN.ViewModels;
 using DVN.Extension;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using ClosedXML.Excel;
+using System.IO;
+
 namespace DVN.Controllers
 {
     [Route("/khach-hang")]
@@ -26,8 +30,9 @@ namespace DVN.Controllers
         public IActionResult CustomerRegister()
         {
 
-            if(HttpContext.Session.Get<Customer>("customer") != null){
-                return RedirectToAction("Index","Home");
+            if (HttpContext.Session.Get<Customer>("customer") != null)
+            {
+                return RedirectToAction("Index", "Home");
             }
             return View("/Views/Customer/Register.cshtml");
         }
@@ -68,8 +73,9 @@ namespace DVN.Controllers
         [HttpGet("dang-nhap")]
         public IActionResult CustomerLogin()
         {
-            if(HttpContext.Session.Get<Customer>("customer") != null){
-                return RedirectToAction("Index","Home");
+            if (HttpContext.Session.Get<Customer>("customer") != null)
+            {
+                return RedirectToAction("Index", "Home");
             }
 
             return View("/Views/Customer/Login.cshtml");
@@ -111,6 +117,17 @@ namespace DVN.Controllers
         }
 
 
+        [HttpGet("kiem-tra-hoa-don" )]
+        public IActionResult CheckOrder()
+        {
+            var Customer = HttpContext.Session.Get<Customer>("customer");
+            var Data = new List<Order>();
+            if (Customer != null)
+            {
+                Data = db.Orders.Include(c => c.Customer).Where(o => o.CustomerId == Customer.Id).ToList();
+            }
+            return View("/Views/Customer/CheckOrder.cshtml", Data);
+        }
 
 
 
@@ -145,6 +162,56 @@ namespace DVN.Controllers
 
         }
 
+
+        [HttpGet("xuat-hoa-don")]
+        public IActionResult Excel()
+        {
+            var Customer = HttpContext.Session.Get<Customer>("customer");
+            var Data = new List<Order>();
+            if (Customer != null)
+            {
+                Data = db.Orders.Include(c => c.Customer).Where(o => o.CustomerId == Customer.Id).ToList();
+            }
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Orders");
+                var currentRow = 1;
+
+                worksheet.Cell(currentRow, 1).Value = "Id";
+                worksheet.Cell(currentRow, 2).Value = "Tên khách hàng";
+                worksheet.Cell(currentRow, 3).Value = "Điện thoại";
+                worksheet.Cell(currentRow, 4).Value = "Email";
+                worksheet.Cell(currentRow, 5).Value = "Địa chỉ";
+                worksheet.Cell(currentRow, 6).Value = "Đơn giá";
+                worksheet.Cell(currentRow, 7).Value = "Số điện sử dụng";
+                worksheet.Cell(currentRow, 8).Value = "Thành tiền";
+                worksheet.Cell(currentRow, 9).Value = "Trạng thái";
+                for (int i = 0; i < Data.Count(); i++)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = Data[i].Id;
+                    worksheet.Cell(currentRow, 2).Value = Data[i].Customer.FullName;
+                    worksheet.Cell(currentRow, 3).Value =  Data[i].Customer.Phone + "\\";
+                    worksheet.Cell(currentRow, 4).Value = Data[i].Customer.Email;
+                    worksheet.Cell(currentRow, 5).Value = Data[i].Customer.Address;
+                    worksheet.Cell(currentRow, 7).Value = Data[i].UnitPrice;
+                    worksheet.Cell(currentRow, 7).Value = Data[i].UseValue;
+                    worksheet.Cell(currentRow, 8).Value = Data[i].Amount;
+                    worksheet.Cell(currentRow, 9).Value = Data[i].Status == true ? "Đã xử lý" : "Hoàn thành";
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    string count = DateTime.Now.Millisecond.ToString();
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "DH" + count + ".xlsx");
+                }
+            }
+        }
 
         private void SkipModelValidate(string keyword)
         {

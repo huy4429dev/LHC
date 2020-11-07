@@ -5,7 +5,7 @@ using DVN.Data;
 using DVN.Models;
 using Microsoft.AspNetCore.Mvc;
 using DVN.Services;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace DVN.Admin.Controllers
 {
@@ -38,13 +38,13 @@ namespace DVN.Admin.Controllers
 
             query = "%" + query + "%";
 
-            var Books = db.Customers
-                               //    .Where(item => EF.Functions.ILike(item.Name, query)
-                               //                   || EF.Functions.ILike(item.Description, query)
-                               //           )
+            var Customers = db.Customers
+                                  .Where(item => EF.Functions.ILike(item.FullName, query)
+                                                 || EF.Functions.ILike(item.Address, query)
+                                         )
                                .OrderBy(item => item.Id).ToList();
 
-            return View("/Views/Admin/Customer.cshtml", Books);
+            return View("/Views/Admin/Customer/Index.cshtml", Customers);
         }
 
 
@@ -90,27 +90,29 @@ namespace DVN.Admin.Controllers
         [HttpPost("update/{id}")]
         public IActionResult Update(int id, [FromForm] Customer model)
         {
-
+            SkipModelValidate("ConfirmPassword");
             if (ModelState.IsValid)
             {
                 var found = db.Customers.Find(id);
-
                 // check category found
 
                 if (found == null)
                 {
-                    ModelState.AddModelError("Found Cateogry", "Category not found");
+                    ModelState.AddModelError("Found Customer", "Không tồn tại khách hàng");
                 }
+                
+                found.FullName = model.FullName;
+                found.LastName = model.LastName;
+                found.Address = model.Address;
+                found.BirthDate = model.BirthDate;
 
                 // add category
-
-                // found.Name = model.Name;
-                // found.Description = model.Description;
+                found.Status = true;
 
                 db.SaveChanges();
 
                 // alert success to view
-                TempData["message"] = "Update category success";
+                TempData["message"] = "Cập nhật khách hàng thành công";
             }
 
             return RedirectToAction("Index");
