@@ -63,7 +63,7 @@ namespace DVN.Admin.Controllers
                     db.Add(new Order{
                         Amount = found.Amount,
                         CustomerId = found.CustomerId,
-                        Status = true,
+                        Status = OrderStatus.Success,
                         CreatTime = DateTime.Now,
                         UnitPrice = found.UnitPrice,
                         UseValue = 0

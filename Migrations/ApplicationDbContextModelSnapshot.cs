@@ -149,8 +149,8 @@ namespace DVN.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("boolean");
+                    b.Property<byte>("Status")
+                        .HasColumnType("smallint");
 
                     b.Property<float>("UnitPrice")
                         .HasColumnType("real");
@@ -158,9 +158,14 @@ namespace DVN.Migrations
                     b.Property<float>("UseValue")
                         .HasColumnType("real");
 
+                    b.Property<int?>("UserverifyId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserverifyId");
 
                     b.ToTable("Orders");
                 });
@@ -292,6 +297,10 @@ namespace DVN.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DVN.Models.User", "Userverify")
+                        .WithMany()
+                        .HasForeignKey("UserverifyId");
                 });
 
             modelBuilder.Entity("DVN.Models.Post", b =>

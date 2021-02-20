@@ -1,0 +1,250 @@
+@using System.Text.Json;
+@using DVN.ViewModels;
+@{
+    Layout = "_LayoutAdmin";
+    ViewBag.Title = "NHÂN VIÊN";
+    ViewBag.PageName = "BÁO CÁO TƯƠNG TÁC NHÂN VIÊN";
+    ViewBag.Link = "/admin/report/order";
+    var user = ViewData["User"] as User;
+    @* var dataChart  = JsonSerializer.Serialize(ViewBag.Chart_PerMonth); *@
+    var dataChart  = new List<object>();
+ }
+ 
+<div class="fix-center loading" 
+										style="background:white; 
+											   position: absolute; 
+											   top: 0; left: 0; 
+											   width:100%;
+											   height:100%;
+											   z-index: 4">
+
+										<img style="position: absolute; top: 30%; width:50px"  src="/assets/loading.gif" alt="">
+</div>
+<div class="d-flex justify-content-end">
+    <div>
+        <div class="form-group mt-3">
+            <input class="form-control" type="text" name="daterange" value="12/01/2020 - 12/12/2020" />
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h5 class="text-center mb-5" style="font-weight:400;font-size:20px; color: #414141">
+            Biểu đồ thống kê lượng tương tác nhân viên <br /> 
+        <small id="time"></small> 
+        </h5>
+        <div class="d-flex justify-content-center">
+            <figure class="highcharts-figure">
+                <div id="container"></div>
+            </figure>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+        <div class="col-10 mx-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nhân viên</th>
+                <th>Xác nhận Tổng hóa đơn</th>
+                <th>Lượt trả đúng hạn</th>
+                <th>Lượt trả trễ hạn</th>
+                <th>Số khách hàng</th>
+            </tr>
+        </thead>
+        <tbody id="report-order-table">
+        </tbody>
+        <tfoot id="report-order-total">
+        </tfoot>
+    </table>
+    </div>
+</div>
+
+@section Css {
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+      .fix-center{
+        display: none;
+      }
+    </style>
+}
+
+@section Script {
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+      var fromDate = @Html.Raw(Json.Serialize(""));
+      var toDate = @Html.Raw(Json.Serialize(""));
+      
+      $(function() {
+              $('input[name="daterange"]').daterangepicker({
+                  timePicker: true,
+                  startDate: moment().add(-1, 'month'),
+                  endDate: moment(),
+                  locale: {
+                  format: 'DD/MM/YYYY'
+                  }
+              },(start,end,label) => { getDataAjax(start,end,label)});
+      });
+    </script>
+    <script>
+            const startOfMonth = moment().clone().startOf('month').format('YYYY-MM-DD hh:mm');
+            const endOfMonth   = moment().clone().endOf('month').format('YYYY-MM-DD hh:mm'); 
+            const curentDate = moment().add('1','d');
+            const lastMonth = moment(curentDate).add(-1,'M').add(-1,'day');
+            const tableBodyReportOrder = document.querySelector('#report-order-table');
+            const tableFooterReportOrder = document.querySelector('#report-order-total');
+            const loading = document.querySelector('.fix-center');
+
+            const time = document.querySelector('#time');
+            time.innerHTML = '(' +  moment(lastMonth).format("DD/MM/YYYY") + ' - ' + moment(curentDate).format('DD/MM/YYYY') + ')'; 
+            var data = @Html.Raw(Json.Serialize(ViewBag.Data));
+            console.log(data,'DATA');
+            const row = (record) => { 
+                return  (
+                    `<tr class="text-center">
+                        <td>${record.userName}</td>
+                        <td>${record.total}</td>
+                        <td>${record.totalOrdrerSuccess}</td>
+                        <td>${record.totalOrdrerOverdue}</td>
+                        <td>${record.totalCustomer}</td>
+                    </tr>` )
+            };
+
+            const rowFooterRender = (record) => { 
+                return  (
+                    `<tr class="text-center">
+                        <td>Tổng</td>
+                        <td>${record.total}</td>
+                        <td>${record.totalOrdrerSuccess}</td>
+                        <td>${record.totalOrdrerOverdue}</td>
+                        <td>${record.totalCustomer}</td>
+                    </tr>` )
+            };
+
+            const renderDataTable = (data) => { 
+                let rows = '';
+                let rowFooter = {
+                    total: 0,
+                    totalOrdrerSuccess: 0,
+                    totalOrdrerOverdue: 0,
+                    totalCustomer: 0
+                };
+
+                data.forEach(item => {
+                    rows += row(item);
+                    rowFooter.total += item.total;
+                    rowFooter.totalOrdrerSuccess += item.totalOrdrerSuccess;
+                    rowFooter.totalOrdrerOverdue += item.totalOrdrerOverdue;
+                    rowFooter.totalCustomer +=item.totalCustomer;
+                })
+                
+                tableBodyReportOrder.innerHTML = rows;
+                tableFooterReportOrder.innerHTML = rowFooterRender(rowFooter);
+            }
+
+            const enumerateDaysBetweenDates = function(startDate, endDate) {
+                var dates = [];
+                var currDate = moment(startDate).startOf('day');
+                var lastDate = moment(endDate).startOf('day');
+                
+                while(currDate.add(1, 'days').diff(lastDate) < 0) {
+                    dates.push(currDate.clone().toDate());
+                }
+                return dates;
+            };
+
+            const listDates = enumerateDaysBetweenDates(lastMonth, curentDate).map(item => moment(item).format("DD/MM/YYYY"));
+
+            renderDataTable(data);
+
+            // call ajax
+
+            const URL = window.location.origin;
+
+            function getDataAjax(start, end , label){
+
+                    loading.style.display = 'flex';
+                    let productsHTML = '';
+                    let timerId = null; 
+                    fetch(`${URL}/admin/report/order/ajax?toDate=${moment(start).toISOString()}&fromDate=${moment(end).toISOString()}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        timerId = setInterval(() => {
+                                loading.style.display = 'none';
+                                let listDates = enumerateDaysBetweenDates(moment(start).add(-1,'d'),moment(end).add(1,)).map(item => moment(item).format("DD/MM/YYYY"));
+                                renderCharts(data.data);
+                                renderDataTable(data.data);
+                                if(timerId != null){
+                                    clearInterval(timerId);
+                                }
+                        },2000);
+                    });
+                }
+
+
+      const renderCharts = ( data) => {
+                    
+          Highcharts.setOptions({
+              colors: ['#01BAF2', '#71BF45', '#FAA74B']
+          });  
+
+          
+
+        Highcharts.chart('container', {
+                        chart: {
+                  plotBackgroundColor: null,
+                  plotBorderWidth: null,
+                  plotShadow: false,
+                  type: 'pie',
+                  width: 250
+                },
+                title: {
+                  text: 'Lượt cho sử dụng điện',
+                  y:225,
+                 style: {
+                    fontSize: '14px' 
+                }
+                },
+              legend:{
+                enabled:false
+              },
+                tooltip: {
+                  pointFormat: '<b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                  pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                      enabled: true,
+                      formatter:function(){
+                        return this.key+ ': ' + this.y + 'lượt xác nhận';
+                      }
+                    },
+                    showInLegend: true
+                  }
+                },
+                series: [{
+                    name: 'Lần mượn',
+                    colorByPoint: true,
+                    innerSize: '80%',
+                    data: data.map((item) => ({
+                            name: item.userName,
+                            y: item.total,
+                     }))
+                 }]
+              });
+
+            }
+
+            // render first
+
+            renderCharts(data);
+
+        </script>
+}

@@ -1,0 +1,144 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    Layout = "_Layout";
+    ViewData["CurrentPage"] = "Customer Profile";
+    var Customer = HttpContextAccessor.HttpContext.Session.Get<Customer>("customer");
+
+}
+@model Customer;
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="#"><i class="fa fa-home"></i>Trang chủ</a>
+                    <span>THÔNG TIN KHÁCH HÀNG</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Customer == null)
+{
+    <div class="checkout-content">
+        <a href="/khach-hang/dang-nhap" class="content-btn">Bấm vào đây để <b>đăng nhập</b></a>
+    </div>
+}
+else
+{   <div class="container">
+            <div class="d-flex justify-content-between">
+                <h4 class="mt-4">THÔNG TIN KHÁCH HÀNG</h4>
+                <span class="mt-4"> Đã đăng ký tài khoản @( DateTime.Now.Subtract(Model.CreatTime).Days) ngày trước </span>
+            </div>
+    </div>
+
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row customer-info position-relative">
+                <button type="button" class="btn btn-primary btn-sm position-absolute" style="top: 0; right: 0; z-index:9999" data-toggle="modal" data-target="#exampleModal">
+                    Cập nhật
+                </button>
+                <div class="col-2">
+                    <span class="customer-info-label">
+                        Mã khách hàng
+                    </span>
+                    <span class="customer-info-label">
+                        Tên khách hàng
+                    </span>
+                    <span class="customer-info-label">
+                        Địa chỉ 
+                    </span>
+                    <span class="customer-info-label">
+                        Điện thoại
+                    </span>
+                </div>
+                <div class="col-10">
+                    <span class="customer-info-value">
+                       @("MKH000"+ Model.Id)
+                    </span>
+                    <span class="customer-info-value">
+                       @Model.FullName
+                    </span>
+                    <span class="customer-info-value">
+                        @Model.Address
+                    </span>
+                    <span class="customer-info-value">
+                        @Model.Phone
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cập nhật thông tin</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+            <form method="Post" action="/khach-hang/update/@(Model.Id)">
+
+        <div class="modal-body">
+             <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Họ:</label>
+                    <input type="text" class="form-control" id="recipient-name" name="FirstName" value="@Model.FirstName">
+             </div>
+               <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Tên:</label>
+                    <input type="text" class="form-control" id="recipient-name" name="LastName" value="@Model.LastName" >
+                </div>
+               <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Mật khẩu:</label>
+                    <input type="password" class="form-control" id="recipient-name" name="password"  value="******">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Điện thoại:</label>
+                    <input type="text" class="form-control" id="recipient-name" name="Phone" value="@Model.Phone">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Email:</label>
+                    <input type="email" class="form-control" id="recipient-name" name="Email" value="@Model.Email">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Địa chỉ:</label>
+                    <input type="text" class="form-control" id="recipient-name" name="Address" value="@Model.Address">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Ngày sinh:</label>
+                    <input type="text" class="form-control" id="datepicker" name="BirthDate" value="@Model.BirthDate">
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+                </form>
+        </div>
+
+    </div>
+</div>
+}
+
+@section Css {
+    <style>
+        .customer-info{
+            background: #fafafa;
+            padding: 14px 10px;
+        }
+        .customer-info-value{
+            display: block;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .customer-info-label{
+            display: block;
+            margin-bottom: 12px;
+        }
+    </style>
+}

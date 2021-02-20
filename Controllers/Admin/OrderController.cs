@@ -79,7 +79,7 @@ namespace DVN.Admin.Controllers
                 worksheet.Cell(currentRow, 7).Value = order.UnitPrice;
                 worksheet.Cell(currentRow, 7).Value = order.UseValue;
                 worksheet.Cell(currentRow, 8).Value = order.Amount;
-                worksheet.Cell(currentRow, 9).Value = order.Status == true ? "Đã xử lý" : "Hoàn thành";
+                worksheet.Cell(currentRow, 9).Value = order.Status == OrderStatus.Success ? "Đã xử lý" : "Hoàn thành";
 
                 using (var stream = new MemoryStream())
                 {

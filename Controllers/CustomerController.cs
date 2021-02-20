@@ -117,7 +117,20 @@ namespace DVN.Controllers
         }
 
 
-        [HttpGet("kiem-tra-hoa-don" )]
+        [HttpGet("dang-xuat")]
+        public IActionResult CustomerLogout()
+        {
+            if (HttpContext.Session.Get<Customer>("customer") != null)
+            {
+                HttpContext.Session.Clear();
+            }
+
+            return View("/Views/Customer/Login.cshtml");
+        }
+
+
+
+        [HttpGet("kiem-tra-hoa-don")]
         public IActionResult CheckOrder()
         {
             var Customer = HttpContext.Session.Get<Customer>("customer");
@@ -191,13 +204,13 @@ namespace DVN.Controllers
                     currentRow++;
                     worksheet.Cell(currentRow, 1).Value = Data[i].Id;
                     worksheet.Cell(currentRow, 2).Value = Data[i].Customer.FullName;
-                    worksheet.Cell(currentRow, 3).Value =  Data[i].Customer.Phone + "\\";
+                    worksheet.Cell(currentRow, 3).Value = Data[i].Customer.Phone + "\\";
                     worksheet.Cell(currentRow, 4).Value = Data[i].Customer.Email;
                     worksheet.Cell(currentRow, 5).Value = Data[i].Customer.Address;
                     worksheet.Cell(currentRow, 7).Value = Data[i].UnitPrice;
                     worksheet.Cell(currentRow, 7).Value = Data[i].UseValue;
                     worksheet.Cell(currentRow, 8).Value = Data[i].Amount;
-                    worksheet.Cell(currentRow, 9).Value = Data[i].Status == true ? "Đã xử lý" : "Hoàn thành";
+                    worksheet.Cell(currentRow, 9).Value = Data[i].Status == OrderStatus.Success ? "Đã xử lý" : "Hoàn thành";
                 }
 
                 using (var stream = new MemoryStream())
@@ -211,6 +224,55 @@ namespace DVN.Controllers
                         "DH" + count + ".xlsx");
                 }
             }
+        }
+
+        [HttpGet("ho-so")]
+        public IActionResult Profile()
+        {
+            var CustomerSession = HttpContext.Session.Get<Customer>("customer");
+            var CustomerInfo = new Customer();
+            if (CustomerSession != null)
+            {
+                CustomerInfo = db.Customers
+                                              .Where(item => item.Id == CustomerSession.Id)
+                                              .FirstOrDefault();
+            }
+
+
+            return View("/Views/Customer/Profile.cshtml", CustomerInfo);
+        }
+
+        [HttpPost("update/{id}")]
+        public IActionResult Update(int id, [FromForm] Customer model)
+        {
+            SkipModelValidate("ConfirmPassword");
+            if (ModelState.IsValid)
+            {
+                var found = db.Customers.Find(id);
+                // check category found
+
+                if (found == null)
+                {
+                    ModelState.AddModelError("Found Customer", "Không tồn tại khách hàng");
+                }
+
+                found.FullName = model.FirstName + " " + model.LastName;
+                found.LastName = model.LastName;
+                found.FirstName = model.FirstName;
+                found.Address = model.Address;
+                found.BirthDate = model.BirthDate;
+
+                // add category
+                found.Status = true;
+
+                db.SaveChanges();
+
+                // alert success to view
+                TempData["message"] = "Cập nhật khách hàng thành công";
+            }
+
+            return RedirectToAction("Profile");
+
         }
 
         private void SkipModelValidate(string keyword)

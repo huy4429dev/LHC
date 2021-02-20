@@ -85,7 +85,7 @@ namespace DVN.Admin.Controllers
 
             // truy vấn đơn hàng không thành công
 
-            int OrderDepose = queryOrder.Where(item => item.Status == false).Count();
+            int OrderDepose = queryOrder.Where(item => item.Status == OrderStatus.Dispose).Count();
 
 
 
@@ -157,7 +157,7 @@ namespace DVN.Admin.Controllers
             // thống kê theo ngày lượng đơn hủy
 
             var orderDespose = queryOrder
-            .Where(item => item.Status == false)
+            .Where(item => item.Status == OrderStatus.Dispose)
                 .GroupBy(item => new
                 {
                     item.CreatTime.Year,

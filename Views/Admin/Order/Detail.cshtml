@@ -53,8 +53,8 @@
                     <div class="md-form">
                         <label for="form1"> <span style="width: 200px; display:inline-block"> Trạng thái:</span></label>
                         <select class="form-input" asp-for="Status">
-                        @(Model.Status == false ? Html.Raw("<option value='0' selected >Hủy</option>") : Html.Raw(" <option value='0' >Hủy</option>"))  
-                         @(Model.Status == true ? Html.Raw("<option value='1' selected >Hoàn thành</option>") : Html.Raw(" <option value='1' >Hoàn thành</option>"))  
+                        @(Model.Status == OrderStatus.Dispose ? Html.Raw("<option value='0' selected >Hủy</option>") : Html.Raw(" <option value='0' >Hủy</option>"))  
+                         @(Model.Status == OrderStatus.Success ? Html.Raw("<option value='1' selected >Hoàn thành</option>") : Html.Raw(" <option value='1' >Hoàn thành</option>"))  
                         </select>
                     </div>
                  
