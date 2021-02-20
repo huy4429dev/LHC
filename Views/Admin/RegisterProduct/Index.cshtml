@@ -68,7 +68,16 @@
       <td>@item.Customer.Phone</td>
       <td>@item.Wattage</td>
       <td class="text-center">@item.CreatTime</td>
-      <td class="text-center">@(item.Status == RegisterProductStatus.Success ? Html.Raw("<span class='label label-success'> Đã xử lý </span>") :  item.Status == RegisterProductStatus.Pendding ? Html.Raw("<span class='label label-warning'> Chờ xử lý </span>") : Html.Raw("<span class='label labe-danger'> Hủy bỏ </span>"))</td>
+      <td class="text-center">
+          @(item.Status == RegisterProductStatus.Success ? 
+          Html.Raw("<span style='width: 80px' class='badge badge-success'>Đã xử lý </span>") 
+          : item.Status == RegisterProductStatus.Pendding 
+          ?Html.Raw("<span style='width: 80px' class='badge badge-warning'> Chưa xử lý </span>") 
+          
+          :
+          Html.Raw("<span style='width: 80px' class='badge badge-danger'> Hủy bỏ   </span>")  
+          )
+      </td>
       @* <td data-toggle="modal" data-target="#basicExampleModal-@item.Id" class="d-flex justify-content-between show-message">
         @(@item.Content.Length > 25 ? @item.Content.Substring(0, 25) + "..." : @item.Content) <i class="fa fa-eye" aria-hidden="true"></i> 
       </td>

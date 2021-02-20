@@ -38,16 +38,16 @@
     </div>
 </div>
 <div class="row mt-4">
-    <table class="table">
+      <div class="col-10 mx-auto">
+      <table class="table">
         <thead>
             <tr>
-                <th>Thời gian</th>
-                <th>Khách hàng mới</th>
-                <th>Khách hàng cũ</th>
-                <th>Khách hàng</th>
-                <th>Tổng hóa đơn</th>
-                <th>Tỷ lệ khách hàng quay lại (%)</th>
-                <th>Tỷ lệ khách hàng mới sử dụng điện (%)</th>
+                <th class="text-center">Thời gian</th>
+                <th class="text-center">Khách hàng mới</th>
+                <th class="text-center">Khách hàng cũ</th>
+                <th class="text-center">Khách hàng</th>
+                <th class="text-center">Tổng hóa đơn</th>
+                <th class="text-center">Tỷ lệ khách hàng mới sử dụng điện (%)</th>
             </tr>
         </thead>
         <tbody id="report-order-table">
@@ -55,6 +55,8 @@
         <tfoot id="report-order-total">
         </tfoot>
     </table>
+      </div>
+    
 </div>
 
 @section Css {
@@ -110,7 +112,6 @@
                         <td>${record.totalOldCustomer}</td>
                         <td>${record.totalCustomer}</td>
                         <td>${record.total}</td>
-                        <td>${record.totalOldCustomer / ((record.totalNewCustomer + record.totalNewCustomer) == 0 ? 1 : record.totalNewCustomer + record.totalNewCustomer ) * 100}</td>
                         <td>${record.total / ((record.totalNewCustomer + record.totalOldCustomer) == 0 ? 1 : (record.totalNewCustomer + record.totalOldCustomer)) * 100}</td>
                     </tr>` )
             };
@@ -123,7 +124,6 @@
                         <td>${record.totalOldCustomer}</td>
                         <td>${record.totalCustomer}</td>
                         <td>${record.total}</td>
-                        <td>${record.totalOldCustomer / ((record.totalNewCustomer + record.totalNewCustomer) == 0 ? 1 : record.totalNewCustomer + record.totalNewCustomer ) * 100 / record.length}</td>
                         <td>${record.total / ((record.totalNewCustomer + record.totalOldCustomer) == 0 ? 1 : (record.totalNewCustomer + record.totalOldCustomer)) * 100 / record.length}</td>
                     </tr>` )
             };

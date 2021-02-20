@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "2FG/gLoOkR9Qa7J0+bUqfLraQKid5Mj5VvUt/fruoc82YaIYTZv0DkUCJUW+rnySCcVoGk8ii4URIgX+SvCxeg==",
+  "dgSpecHash": "SqEWhmc0NI6toTMjMtUvkml6z2GaOSZUXdcxaAfYwkkvNEG2L1DGFUH94BdCqvd5svyK3h/LAehFeNVKSN0TUQ==",
   "success": true,
   "projectFilePath": "E:\\project\\c#\\LHC\\DVN.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HUY4\\.nuget\\packages\\closedxml\\0.95.3\\closedxml.0.95.3.nupkg.sha512",
+    "C:\\Users\\HUY4\\.nuget\\packages\\cronos\\0.7.0\\cronos.0.7.0.nupkg.sha512",
     "C:\\Users\\HUY4\\.nuget\\packages\\documentformat.openxml\\2.7.2\\documentformat.openxml.2.7.2.nupkg.sha512",
     "C:\\Users\\HUY4\\.nuget\\packages\\excelnumberformat\\1.0.10\\excelnumberformat.1.0.10.nupkg.sha512",
     "C:\\Users\\HUY4\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

@@ -53,7 +53,7 @@ namespace DVN.Controllers
                     model.FullName = string.Empty;
                     model.CreatTime = DateTime.Now;
                     model.Password = AesOperation.EncryptString("mot cai key khong thang nao biet", model.Password);
-                    model.Status = true;
+                    model.Status = false;
                     db.Customers.Add(model);
                     db.SaveChanges();
                     ViewData["CreateCustomerSuccess"] = "Đăng ký tài khoản thành công";

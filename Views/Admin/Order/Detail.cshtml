@@ -7,10 +7,12 @@
 
  <main>
                     <div class="container-fluid">
-                        <h4 class="mt-4">CHI TIẾT ĐƠN HÀNG # @Model.Id</h4>
+                        <h4 class="mt-4">CHI TIẾT ĐƠN HÀNG @("#DH" + Model.Id)</h4>
                     </div>
-                     <div class="card mb-4">
-                              <div asp-validation-summary="All" class="alert alert-danger"></div>
+                     <div class="card mb-4" style="border:none">
+                         <div class="row">
+                        <div class="col-8 mx-auto text-center">
+                             <div asp-validation-summary="All" class="alert alert-danger"></div>
                             
                             @if(@TempData["message"] != null)
                             {
@@ -24,47 +26,110 @@
                                     @TempData["error"]
                                 </div>
                             }
-<div class="row">
-     <div class="col-8 mx-auto pb-5">
-            <form action="/admin/product/register/@Model.Id" method="post">
+                        </div>
+ 
+                         </div>
+                            
+            <form action="/admin/order/@Model.Id" method="post">
+ <div class="invoice-box mt-5">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="/assets/page/img/logo.jpg" style="width:100%; max-width:300px;">
+                            </td>
+                            
+                            <td>
+                                Đơn hàng: @("#DH" + Model.Id)<br>
+                                Ngày tạo: @Model.CreatTime.ToString("dd MM, yyyy")<br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                               TỔNG CÔNG TY ĐIỆN LỰC TỈNH ĐIỆN BIÊN.<br>
+                               Số 904 Tổ 9 - Phường Mường Thanh - TP Điện Biên Phủ - Tỉnh Điện Biên<br>
+
+                            </td>
+                            
+                            <td>
+                                @Model.Customer.FullName<br>
+                                @Model.Customer.Phone<br>
+                                @Model.Customer.Email<br>
+                                @Model.Customer.Address<br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="heading">
+                <td>
+                    Số điện sử dụng
+                </td>
+                
+                <td>
+                    Đơn giá
+                </td>
+            </tr>
+            
+            <tr class="item">
+                <td>
+                     <div class="md-form">
+                                    <input value="@Model.UseValue" class="form-input" asp-for="UseValue" /> 
+                     KW
+
+                     </div>
+                </td>
+                
+                <td>
+                   @Model.UnitPrice.ToString("N0") VND
+                </td>
+            </tr>
+             <tr class="heading">
+                <td>
+                    Trạng thái
+                </td>
+                
+                <td>
+                    <div class="md-form">
+                        <select class="form-input" asp-for="Status">
+                        @(Model.Status == OrderStatus.Dispose ? Html.Raw("<option value='2' selected >Hủy</option>") : Html.Raw(" <option value='2' >Hủy</option>"))  
+                         @(Model.Status == OrderStatus.Success ? Html.Raw("<option value='2' selected >Đã xử lý</option>") : Html.Raw(" <option value='1' >Đã xử lý</option>"))  
+                         @(Model.Status == OrderStatus.NoProcess ? Html.Raw("<option value='4' selected >Chưa xử lý</option>") : Html.Raw(" <option value='4' >Chưa xử lý</option>"))  
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="total">
+                <td></td>
+                
+                <td class="pt-4 pb-4">
+                   Thành tiền:  @Model.Amount.ToString("N0") VND
+                </td>
+            </tr>
+        </table>
+     <div class="pb-5 d-flex justify-content-end">
+        
                 <div asp-validation-summary="All"></div>
                     @if(!String.IsNullOrEmpty(ViewBag.message)){
                         <div class="alert alert-success">@ViewBag.message</div>
                     }
-                    <div class="md-form mt-5">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Tên khách hàng:</span> @Model.Customer.FullName</label>
-                    </div>
-                    <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Điện thoại:</span> @Model.Customer.Phone</label>
-                    </div>
-                    <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Email:</span> @Model.Customer.Email</label>
-                    </div>
-                    <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Địa chỉ:</span> @Model.Customer.Address</label>
-                    </div>
-                    <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Đơn giá:</span> @Model.UnitPrice.ToString("N0") VND</label>
-                    </div>
-                    <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Thành tiền:</span> @Model.Amount.ToString("N0") VND</label>
-                    </div>
-
-                    <div class="md-form">
-                        <label for="form1"> <span style="width: 200px; display:inline-block"> Trạng thái:</span></label>
-                        <select class="form-input" asp-for="Status">
-                        @(Model.Status == OrderStatus.Dispose ? Html.Raw("<option value='0' selected >Hủy</option>") : Html.Raw(" <option value='0' >Hủy</option>"))  
-                         @(Model.Status == OrderStatus.Success ? Html.Raw("<option value='1' selected >Hoàn thành</option>") : Html.Raw(" <option value='1' >Hoàn thành</option>"))  
-                        </select>
-                    </div>
-                 
                     <div class="mb-4 mt-4">
                         <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit">Cập nhật</button>
                         <a class="btn btn-success  btn-sm my-0" href="/admin/order/export/@Model.Id">Xuất đơn hàng</a>
                     </div>
-            </form>
     </div>
+            </form>
 </div>
+
                      </div>
  </main>
   @section Css{ 
@@ -78,6 +143,95 @@
         display: none;
             }
     </style>
+        <style>
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+    
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+    
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
+    
+    .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+    }
+    
+    .invoice-box table tr.information table td {
+        padding-bottom: 40px;
+    }
+    
+    .invoice-box table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+    
+    .invoice-box table tr.details td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom: 1px solid #eee;
+    }
+    
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+    
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    
+    .rtl table {
+        text-align: right;
+    }
+    
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
+    </style>
   }
-
-}

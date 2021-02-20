@@ -46,6 +46,14 @@ namespace DVN.Admin.Controllers
         {
             var found = db.RegisterProducts.Find(id);
             found.Status = model.Status;
+            var customer = db.Customers.FirstOrDefault(item => item.Id == found.CustomerId);
+            if(model.Status == RegisterProductStatus.Success){
+                customer.Status = true;
+            }
+            else{
+                customer.Status = false;
+            }
+
             db.SaveChanges();
 
             if (found.Status == RegisterProductStatus.Abort)
@@ -57,10 +65,12 @@ namespace DVN.Admin.Controllers
                 TempData["message"] = "Đơn đăng ký và đơn hàng chuyển trạng thái chờ";
             }
             if (found.Status == RegisterProductStatus.Success)
-            { 
+            {
                 var foundOrder = db.Orders.FirstOrDefault(item => item.CustomerId == found.CustomerId);
-                if(foundOrder == null){
-                    db.Add(new Order{
+                if (foundOrder == null)
+                {
+                    db.Add(new Order
+                    {
                         Amount = found.Amount,
                         CustomerId = found.CustomerId,
                         Status = OrderStatus.Success,

@@ -75,3 +75,4 @@ E:\project\c#\LHC\bin\Debug\net5\Microsoft.AspNetCore.JsonPatch.dll
 E:\project\c#\LHC\bin\Debug\net5\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 E:\project\c#\LHC\bin\Debug\net5\Newtonsoft.Json.Bson.dll
 E:\project\c#\LHC\obj\Debug\net5\Razor\Views\Customer\Profile.cshtml.g.cs
+E:\project\c#\LHC\bin\Debug\net5\Cronos.dll

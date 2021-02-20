@@ -26,6 +26,7 @@
       "DVN/1.0.0": {
         "dependencies": {
           "ClosedXML": "0.95.3",
+          "Cronos": "0.7.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.0",
           "Microsoft.EntityFrameworkCore.Design": "5.0.0",
@@ -340,6 +341,17 @@
         },
         "compile": {
           "lib/netstandard2.0/ClosedXML.dll": {}
+        }
+      },
+      "Cronos/0.7.0": {
+        "runtime": {
+          "lib/netstandard2.0/Cronos.dll": {
+            "assemblyVersion": "0.7.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Cronos.dll": {}
         }
       },
       "DocumentFormat.OpenXml/2.7.2": {
@@ -3026,6 +3038,13 @@
       "sha512": "sha512-Ud8+fHLzZRjtSk7NMxl5krRCXZ5zD92TdfhLEt22YFBkqWD4BI8Vhxir9VDcFCeOD2JVa/hzpkbWqE3TeC84WQ==",
       "path": "closedxml/0.95.3",
       "hashPath": "closedxml.0.95.3.nupkg.sha512"
+    },
+    "Cronos/0.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-r7bwVGU2Kkh95cbXB88BtOtZyUOE/DDX+Shhe9SXgcsHV+LFPulygdoVxGLTqTpibwGw4B09WTNqQgFr3QrP9g==",
+      "path": "cronos/0.7.0",
+      "hashPath": "cronos.0.7.0.nupkg.sha512"
     },
     "DocumentFormat.OpenXml/2.7.2": {
       "type": "package",

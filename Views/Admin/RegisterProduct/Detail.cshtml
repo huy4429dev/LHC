@@ -63,7 +63,7 @@
                         <label for="form1"> <span style="width: 200px; display:inline-block"> Trạng thái:</span></label>
                         <select class="form-input" asp-for="Status">
                          @(Model.Status == RegisterProductStatus.Abort ? Html.Raw("<option value='0' selected >Hủy</option>") : Html.Raw(" <option value='0' >Hủy</option>"))  
-                         @(Model.Status == RegisterProductStatus.Pendding ? Html.Raw("<option value='1' selected >Đang chờ</option>") : Html.Raw(" <option value='1' >Đang chờ</option>"))  
+                         @(Model.Status == RegisterProductStatus.Pendding ? Html.Raw("<option value='1' selected >Đang chờ</option>") : Html.Raw(" <option value='1' >Chưa xử lý</option>"))  
                          @(Model.Status == RegisterProductStatus.Success ? Html.Raw("<option value='2' selected >Đã xử lý</option>") : Html.Raw(" <option value='2' >Đã xử lý</option>"))  
                         </select>
                     </div>

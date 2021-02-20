@@ -9,6 +9,7 @@ using DVN.Extension;
 using Microsoft.EntityFrameworkCore;
 using ClosedXML.Excel;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace DVN.Admin.Controllers
 {
@@ -45,8 +46,33 @@ namespace DVN.Admin.Controllers
         [HttpPost("{id}")]
         public IActionResult Update(int id, [FromForm] Order model)
         {
+            var user =  HttpContext.Session.Get<User>("user");
             var found = db.Orders.Find(id);
+            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var RegisterProduct = db.RegisterProducts.FirstOrDefault(item => item.CustomerId == found.CustomerId);
             found.Status = model.Status;
+            found.UseValue = model.UseValue;
+            found.UserverifyId = user?.Id ?? db.Users.Select(u => u.Id).FirstOrDefault(); 
+            found.Amount = (float) unitPrice * RegisterProduct.Wattage * 10 / 100 +  unitPrice * RegisterProduct.Wattage;
+            if (found.Status == OrderStatus.Dispose)
+            {
+                TempData["message"] = "Đơn hàng đã được hủy bỏ";
+            }
+            if (found.Status == OrderStatus.NoProcess)
+            {
+                TempData["message"] = "Đơn hàng chuyển trạng thái chờ";
+            }
+            var customer = db.Customers.FirstOrDefault(item => item.Id == found.CustomerId);
+            if (model.Status == OrderStatus.Success)
+            {
+                customer.Status = true;
+                TempData["message"] = "Đơn hàng chuyển trạng thái đã xử lý";
+            }
+            else
+            {
+                customer.Status = false;
+            }
+
             db.SaveChanges();
 
             return Redirect(Request.Headers["Referer"].ToString());
@@ -89,7 +115,7 @@ namespace DVN.Admin.Controllers
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "DH"+count+".xlsx");
+                        "DH" + count + ".xlsx");
                 }
             }
         }

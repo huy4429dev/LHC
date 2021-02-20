@@ -31,8 +31,6 @@ namespace DVN
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(14); // thoi gian sống
@@ -49,8 +47,25 @@ namespace DVN
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // scope service
-            
+
             services.AddScoped<UserService>();
+
+            services.AddScoped<IMyScopedService, MyScopedService>();
+
+            services.AddCronJob<MyCronJob1>(c =>
+            {
+
+                var now = DateTime.Now;
+                string min = "0";
+                string hourd = "0";
+                var curentMonth = now.Month;
+                var curentYear = now.Year;
+                var lastDayofMonth = DateTime.DaysInMonth(curentYear, curentMonth);
+
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = @"50 12 * * *"; // format min / hour / day / month / dayOfWeek
+            });
+       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

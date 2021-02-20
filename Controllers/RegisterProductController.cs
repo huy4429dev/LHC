@@ -72,6 +72,7 @@ namespace DVN.Controllers
                     foundCustomer.FullName = model.FirstName + " " + model.LastName;
                     foundCustomer.Phone = model.Phone;
                     foundCustomer.Email = model.Email;
+                    foundCustomer.Status = false;
 
                     db.RegisterProducts.Add(new RegisterProduct
                     {
