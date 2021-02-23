@@ -22,27 +22,50 @@ namespace DVN.Admin.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, int pageSize = 25)
         {
 
-            var Customers = db.Customers.OrderBy(item => item.Id).ToList();
+            var query = db.Customers.AsQueryable();
+            var Customers = query
+                              .OrderByDescending(item => item.Id)
+                              .Skip((page - 1) * pageSize)
+                              .Take(pageSize)
+                              .ToList();
 
+            ViewBag.TotalPage = query.Count() % pageSize == 0 ? query.Count() / pageSize : query.Count() / pageSize + 1;
+            ViewBag.CurentPage = page;
             return View("/Views/Admin/Customer/Index.cshtml", Customers);
 
         }
 
         [HttpGet("search")]
 
-        public IActionResult Search(string query)
+        public IActionResult Search(string query, DateTime? fillDate, int page = 1, int pageSize = 25)
         {
+            var Customers = new List<Customer>();
+            var sql = db.Customers.AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                query = "%" + query + "%";
+                sql = sql.Where(item => EF.Functions.ILike(item.Username, query)
+                                        || EF.Functions.ILike(item.Address, query)
+                                        || EF.Functions.ILike(item.FullName, query)
+                                        || EF.Functions.ILike(item.Phone, query)
+                               );
+            }
 
-            query = "%" + query + "%";
+            if (fillDate.HasValue)
+            {
+                sql = sql.Where(item => item.CreatTime == fillDate);
+            }
 
-            var Customers = db.Customers
-                                  .Where(item => EF.Functions.ILike(item.FullName, query)
-                                                 || EF.Functions.ILike(item.Address, query)
-                                         )
-                               .OrderBy(item => item.Id).ToList();
+            Customers = sql.OrderByDescending(item => item.Id)
+                     .Skip((page - 1) * pageSize)
+                     .Take(pageSize)
+                     .ToList();
+
+            ViewBag.TotalPage = sql.Count() % pageSize == 0 ? sql.Count() / pageSize : sql.Count() / pageSize + 1;
+            ViewBag.CurentPage = page;
 
             return View("/Views/Admin/Customer/Index.cshtml", Customers);
         }
@@ -64,8 +87,10 @@ namespace DVN.Admin.Controllers
                 }
                 else
                 {
-                    model.FullName = model.FirstName + " " + model.LastName;
+                    string key = "mot cai key khong thang nao biet";
+                    model.Status = true;
                     model.CreatTime = DateTime.Now;
+                    model.Password = AesOperation.EncryptString(key, model.Password);
                     model.Status = true;
                     db.Customers.Add(model);
                     db.SaveChanges();
@@ -91,6 +116,9 @@ namespace DVN.Admin.Controllers
         public IActionResult Update(int id, [FromForm] Customer model)
         {
             SkipModelValidate("ConfirmPassword");
+            SkipModelValidate("Username");
+            SkipModelValidate("Status");
+            SkipModelValidate("Password");
             if (ModelState.IsValid)
             {
                 var found = db.Customers.Find(id);
@@ -100,21 +128,17 @@ namespace DVN.Admin.Controllers
                 {
                     ModelState.AddModelError("Found Customer", "Không tồn tại khách hàng");
                 }
-                
-                found.FullName = model.FullName;
-                found.LastName = model.LastName;
+
                 found.Address = model.Address;
+                found.FullName = model.FirstName + model.LastName;
                 found.BirthDate = model.BirthDate;
-
-                // add category
-                found.Status = true;
-
+                found.Phone = model.Phone;
+                found.Status = model.Status;
                 db.SaveChanges();
 
                 // alert success to view
                 TempData["message"] = "Cập nhật khách hàng thành công";
             }
-
             return RedirectToAction("Index");
 
         }

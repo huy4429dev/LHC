@@ -2,11 +2,11 @@
     Layout = "_LayoutAdmin";
     ViewBag.Title = "Liên hệ";
 }
-@model List<Contact>
+@model List<CustomerEmail>
 
      <main>
                     <div class="container-fluid">
-                        <h4 class="mt-4">PHẢN HỒI</h4>
+                        <h4 class="mt-4">EMAIL KHÁCH HÀNG</h4>
                     </div>
                     <div class="card mb-4">
                               <div asp-validation-summary="All" class="alert alert-danger"></div>
@@ -26,7 +26,7 @@
 
                             <form method="GET" action="/admin/contact/search">
                                     <div class="input-group mb-3 p-3">
-                                            <input name="query" type="text" class="form-control" placeholder="Tìm liên hệ" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <input name="query" type="text" class="form-control" placeholder="Tìm khách hàng" aria-label="Recipient's username" aria-describedby="basic-addon2">
                                             <div class="input-group-append">
                                                 <button type="submit" class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></button>
                                             </div>
@@ -45,11 +45,8 @@
     <tr>
       <th class="th-sm" >#
       </th>
-      <th class="th-sm">Họ tên
-      </th>
+
       <th class="th-sm">Email
-      </th>
-      <th class="th-sm ">Nội dung
       </th>
       <th class="th-sm text-center">Thời gian
       </th>
@@ -61,14 +58,10 @@
     {
     <tr>
       <td >@item.Id</td>
-      <td>@item.FullName</td>
       <td>@item.Email</td>
-      <td data-toggle="modal" data-target="#basicExampleModal-@item.Id" class="d-flex justify-content-between show-message">
-        @(@item.Content.Length > 25 ? @item.Content.Substring(0, 25) + "..." : @item.Content) <i class="fa fa-eye" aria-hidden="true"></i> 
-      </td>
       <td class="text-center">@item.CreatedTime</td>
       <td class="text-center">
-        @(@item.Status == false ? Html.Raw("<span style='width:60px' class='badge badge-warning status-message'>Chưa xem</span>") : @Html.Raw("<span style='width:60px' class='badge badge-success status-message'>Đã xem</span>"))
+        @(@item.Status == false ? Html.Raw("<span style='width:100px' class='badge badge-warning status-message'>Chưa xác nhận</span>") : @Html.Raw("<span style='width:100px' class='badge badge-success status-message'>đã xác nhận</span>"))
       </td>
     </tr>
     }
@@ -97,38 +90,7 @@
                             </div>
                      </div>
  </main>
-        @* Model detail message  *@
-
-        @foreach (var item in Model)
-        {
-        <div class="modal fade" id="basicExampleModal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                 <p>NỘI DUNG</p>
-                 <p>
-                    <span style="font-size: 14px"><span style="width:80px; display:inline-block">Họ tên: </span>@item.FullName</span>
-                 </p>
-                 <p>
-                    <span style="font-size: 14px"><span style="width:80px; display:inline-block">Email: </span>@item.Email</span>
-                 </p>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                @item.Content
-              </div>
-              <div class="modal-footer">
-              </div>
-            </div>
-          </div>
-        </div>
-        }
-
+      
   
 @section Css{
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
@@ -144,42 +106,4 @@
         display: none;
     }
     </style>
-}
-@section Script{
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#dtBasicExample').DataTable( 
-               {  
-                 "order": [[ 0, "desc" ]]
-               },
-            );
-            $('.dataTables_length').addClass('bs-select');
-        });
-    </script>
-    <script>
-     // change status contact while click show content 
-      
-     
-      let showMessages  = document.querySelectorAll('.show-message');
-      let statusMessage = document.querySelectorAll('.status-message');
-      
-        showMessages.forEach(function(item, index){
-          item.addEventListener('click', function() {
-          let idContact = this.dataset.target.slice(19);
-        
-          let url = "/admin/contact/update-status/" +  idContact;
-          
-          fetch(url)
-                  .then(response => response.json())
-                  .then(data => {
-                    statusMessage[index].className = 'badge badge-success status-message'; 
-                    statusMessage[index].innerText = 'Đã xem';
-                  })
-                  .catch(err => {
-                      console.log(err);
-                  })
-          })
-        })
-    </script>
 }

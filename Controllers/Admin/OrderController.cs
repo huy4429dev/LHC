@@ -25,14 +25,45 @@ namespace DVN.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, int pageSize = 25)
         {
-
-            var data = db.Orders.Include(x => x.Customer).ToList();
-
+            var query = db.Orders.AsQueryable();
+            var data = query.Include(x => x.Customer).ToList();
+            ViewBag.TotalPage = query.Count() % pageSize == 0 ? query.Count() / pageSize : query.Count() / pageSize + 1;
+            ViewBag.CurentPage = page;
             return View("/Views/Admin/Order/Index.cshtml", data);
         }
 
+
+
+        [HttpGet("search")]
+        public IActionResult Search(string query, DateTime? fillDate, int page = 1, int pageSize = 1)
+        {
+            var sql = db.Orders.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                query = "%" + query + "%";
+                sql = sql.Where(item => EF.Functions.ILike(item.Customer.FullName, query) ||
+                                        EF.Functions.ILike(item.Customer.Email, query) ||
+                                        EF.Functions.ILike(item.Customer.Username, query) ||
+                                        EF.Functions.ILike(item.Customer.Phone, query) 
+                               );
+            }
+
+            if (fillDate.HasValue)
+            {
+                sql = sql.Where(item => item.CreatTime == fillDate);
+            }
+
+            var data = sql.Include(x => x.Customer)
+                     .OrderByDescending(item => item.Id)
+                     .Skip((page - 1) * pageSize)
+                     .Take(pageSize)
+                     .ToList();
+            ViewBag.TotalPage = sql.Count() % pageSize == 0 ? sql.Count() / pageSize : sql.Count() / pageSize + 1;
+            ViewBag.CurentPage = page;
+            return View("/Views/Admin/Order/Index.cshtml", data);
+        }
 
         [HttpGet("{id}")]
         public IActionResult Detail(int id)
@@ -46,14 +77,14 @@ namespace DVN.Admin.Controllers
         [HttpPost("{id}")]
         public IActionResult Update(int id, [FromForm] Order model)
         {
-            var user =  HttpContext.Session.Get<User>("user");
+            var user = HttpContext.Session.Get<User>("user");
             var found = db.Orders.Find(id);
             float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
             var RegisterProduct = db.RegisterProducts.FirstOrDefault(item => item.CustomerId == found.CustomerId);
             found.Status = model.Status;
             found.UseValue = model.UseValue;
-            found.UserverifyId = user?.Id ?? db.Users.Select(u => u.Id).FirstOrDefault(); 
-            found.Amount = (float) unitPrice * RegisterProduct.Wattage * 10 / 100 +  unitPrice * RegisterProduct.Wattage;
+            found.UserverifyId = user?.Id ?? db.Users.Select(u => u.Id).FirstOrDefault();
+            found.Amount = (float)unitPrice * RegisterProduct.Wattage * 10 / 100 + unitPrice * RegisterProduct.Wattage;
             if (found.Status == OrderStatus.Dispose)
             {
                 TempData["message"] = "Đơn hàng đã được hủy bỏ";
@@ -105,7 +136,7 @@ namespace DVN.Admin.Controllers
                 worksheet.Cell(currentRow, 7).Value = order.UnitPrice;
                 worksheet.Cell(currentRow, 7).Value = order.UseValue;
                 worksheet.Cell(currentRow, 8).Value = order.Amount;
-                worksheet.Cell(currentRow, 9).Value = order.Status == OrderStatus.Success ? "Đã xử lý" : "Hoàn thành";
+                worksheet.Cell(currentRow, 9).Value = order.Status == OrderStatus.Success ? "Đã xử lý" : "Chưa xử lý";
 
                 using (var stream = new MemoryStream())
                 {

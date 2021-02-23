@@ -58,10 +58,11 @@ namespace DVN.Controllers
 
             if (ModelState.IsValid)
             {
-                var foundCustomer = db.Customers.FirstOrDefault(item => item.Status && item.Id == customer.Id);
+                var foundCustomer = db.Customers.FirstOrDefault(item => item.Id == customer.Id);
                 if (foundCustomer == null)
                 {
                     ModelState.AddModelError("NotFoundCustomer", "Tài khoản không khả dụng");
+
                 }
                 else
                 {
@@ -73,6 +74,7 @@ namespace DVN.Controllers
                     foundCustomer.Phone = model.Phone;
                     foundCustomer.Email = model.Email;
                     foundCustomer.Status = false;
+                    
 
                     db.RegisterProducts.Add(new RegisterProduct
                     {
@@ -88,7 +90,6 @@ namespace DVN.Controllers
                     });
 
                     db.SaveChanges();
-
                     ViewData["RegisterProductSuccess"] = "Đăng ký sử dụng thành công chúng tôi sẽ liên hệ lại cho bạn thông qua số điện thoại: " + model.Phone;
 
 
@@ -100,4 +101,5 @@ namespace DVN.Controllers
         }
 
     }
+    
 }

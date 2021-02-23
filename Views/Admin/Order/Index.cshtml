@@ -1,6 +1,6 @@
 @{
     Layout = "_LayoutAdmin";
-    ViewBag.Title = "Đơn đăng ký sử dụng";
+    ViewBag.Title = "Đơn hàng";
 }
 @model List<Order>
 
@@ -24,24 +24,28 @@
                                 </div>
                             }
 
-                            <form method="GET" action="/admin/contact/search">
+                            <form method="GET" action="/admin/order/search">
                                     <div class="input-group mb-3 p-3">
-                                            <input name="query" type="text" class="form-control" placeholder="Tìm đơn đăng ký" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <input name="query" type="teemoxt" class="form-control" placeholder="Tìm đơn hàng" aria-label="Recipient's username" aria-describedby="basic-addon2">
                                             <div class="input-group-append">
                                                 <button type="submit" class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></button>
                                             </div>
                                     </div>
                             </form>
-                                <div class="card-header d-flex justify-content-between " style="height:54px">
-                             
+                            <div class="card-header d-flex align-items-center">
+                                 <form action="/admin/order/search" method="get">
+                                    <div class="form-group mb-0 mr-1 d-flex">
+                                        <input placeholder="Ngày tạo đơn" onfocus="(this.type='date')"  class="form-control" name="fillDate" style="height:31px; border-radius: 0; width: 180px; outline: none">
+                                        <button type="submit" class="btn btn-secondary btn-sm" style="border-radius: 0"><i class="fas fa-filter"></i></button>
+                                    </div>
+                                 </form>
+                                 <button type="button" style="border-radius: 0;" class="btn btn-primary btn-sm mr-1" data-toggle="modal" data-target="#addCustomer" ><i class="fas fa-plus"></i></button>
+                                 <button  class="btn btn-success btn-sm" style="border-radius: 0;" onclick="location.href = '/admin/customer';"><i class="fas fa-redo"></i></button>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
-
-
-
     <tr>
       <th class="th-sm" >#
       </th>
@@ -86,6 +90,22 @@
     }
   </tbody>
 </table>
+ <div class="d-flex justify-content-end">
+                                        <ul class="pagination pagination-sm">
+                                              	@for (int i = 1; i <= ViewBag.TotalPage; i++)
+                                                {
+                                                    @if(ViewBag.CurentPage == i){
+                                                        <li class="page-item active"><a  class="page-link" href="?page=@i">@i</a></li>	
+                                                    }
+                                                    else{
+                                                        <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+                                                    }
+                                                }
+                                                @if(ViewBag.TotalPage > ViewBag.CurentPage){
+                                                    <li  class="page-item"><a class="page-link" href="?page=@(ViewBag.CurentPage + 1)"><i class="fas fa-chevron-right"></i></a></li>
+                                                }
+                                        </ul>
+                                    </div>
                            </div>
                             </div>
                      </div>

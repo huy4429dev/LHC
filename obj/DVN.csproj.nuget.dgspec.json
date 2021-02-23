@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\project\\c#\\LHC\\DVN.csproj": {}
+    "E:\\project\\c#\\LHC2\\LHC\\DVN.csproj": {}
   },
   "projects": {
-    "E:\\project\\c#\\LHC\\DVN.csproj": {
+    "E:\\project\\c#\\LHC2\\LHC\\DVN.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\project\\c#\\LHC\\DVN.csproj",
+        "projectUniqueName": "E:\\project\\c#\\LHC2\\LHC\\DVN.csproj",
         "projectName": "DVN",
-        "projectPath": "E:\\project\\c#\\LHC\\DVN.csproj",
-        "packagesPath": "C:\\Users\\HUY4\\.nuget\\packages\\",
-        "outputPath": "E:\\project\\c#\\LHC\\obj\\",
+        "projectPath": "E:\\project\\c#\\LHC2\\LHC\\DVN.csproj",
+        "packagesPath": "C:\\Users\\lexua\\.nuget\\packages\\",
+        "outputPath": "E:\\project\\c#\\LHC2\\LHC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\HUY4\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\lexua\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5"
