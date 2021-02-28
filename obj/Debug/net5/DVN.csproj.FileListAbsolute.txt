@@ -156,3 +156,4 @@ E:\project\c#\LHC2\LHC\obj\Debug\net5\DVN.dll
 E:\project\c#\LHC2\LHC\obj\Debug\net5\ref\DVN.dll
 E:\project\c#\LHC2\LHC\obj\Debug\net5\DVN.pdb
 E:\project\c#\LHC2\LHC\obj\Debug\net5\DVN.genruntimeconfig.cache
+E:\project\c#\LHC2\LHC\obj\Debug\net5\Razor\Views\Admin\Setting\Index.cshtml.g.cs

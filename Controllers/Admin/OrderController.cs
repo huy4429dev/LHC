@@ -79,7 +79,12 @@ namespace DVN.Admin.Controllers
         {
             var user = HttpContext.Session.Get<User>("user");
             var found = db.Orders.Find(id);
-            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+            
+            float unitPrice = 0;
+            if(option != null){
+               unitPrice = float.Parse(option.Value);
+            }
             var RegisterProduct = db.RegisterProducts.FirstOrDefault(item => item.CustomerId == found.CustomerId);
             found.Status = model.Status;
             found.UseValue = model.UseValue;

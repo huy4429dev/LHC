@@ -108,9 +108,9 @@ else
                     <label for="recipient-name" class="col-form-label">Địa chỉ:</label>
                     <input type="text" class="form-control" id="recipient-name" name="Address" value="@Model.Address">
                 </div>
-                <div class="form-group">
+               <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Ngày sinh:</label>
-                    <input type="text" class="form-control" id="datepicker" name="BirthDate" value="@Model.BirthDate">
+                    <input type="text" class="form-control" id="datepicker" name="BirthDate" value="@Model.BirthDate.ToString("dd/MM/yyyy")">
                 </div>
         </div>
         <div class="modal-footer">
@@ -125,6 +125,7 @@ else
 }
 
 @section Css {
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css">
     <style>
         .customer-info{
             background: #fafafa;
@@ -141,4 +142,43 @@ else
             margin-bottom: 12px;
         }
     </style>
+}
+
+@section Script {
+   <script>
+        $( function() {
+            $( "#datepicker" ).datepicker();
+        } );
+        
+   </script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+         <script>
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            var registerSuccess = "@Html.Raw(TempData["CreateCustomerSuccess"] ?? "")";
+            var updateCustomerSuccess = "@Html.Raw(TempData["updateCustomerSuccess"] ?? "")";
+
+            if(registerSuccess != ""){
+                toastr["info"]("Đăng ký tài khoản thành công, vui lòng cập nhật đầy đủ thông tin của bạn !");
+            }
+
+            if(updateCustomerSuccess != ""){
+                toastr["info"]("Cập nhật thông tin thành công !");
+            }
+    </script>
 }

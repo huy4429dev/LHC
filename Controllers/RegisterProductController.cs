@@ -23,15 +23,22 @@ namespace DVN.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
+            float unitPrice = 0;
+            if (option != null)
+            {
+                unitPrice = float.Parse(option.Value);
+            }
             ViewData["unitPrice"] = unitPrice;
 
             // check login 
             var customer = HttpContext.Session.Get<Customer>("customer");
-            if( customer  != null)
-            {   
+            if (customer != null)
+            {
                 var customerInfo = db.Customers.Find(customer.Id);
-                ViewData["customerInfo"] = new Customer {
+                ViewData["customerInfo"] = new Customer
+                {
                     Address = customerInfo.Address,
                     FirstName = customerInfo.FirstName,
                     LastName = customerInfo.LastName,
@@ -49,7 +56,13 @@ namespace DVN.Controllers
 
             // get unitprice
 
-            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
+            float unitPrice = 0;
+            if (option != null)
+            {
+                unitPrice = float.Parse(option.Value);
+            }
 
             // get customer info login 
 
@@ -74,7 +87,7 @@ namespace DVN.Controllers
                     foundCustomer.Phone = model.Phone;
                     foundCustomer.Email = model.Email;
                     foundCustomer.Status = false;
-                    
+
 
                     db.RegisterProducts.Add(new RegisterProduct
                     {
@@ -84,7 +97,7 @@ namespace DVN.Controllers
                         Status = RegisterProductStatus.Pendding,
                         Wattage = model.Wattage,
                         UnitPrice = unitPrice,
-                        Amount = (float) unitPrice * model.Wattage * 10 / 100  +  unitPrice * model.Wattage  , // thanh tien
+                        Amount = (float)unitPrice * model.Wattage * 10 / 100 + unitPrice * model.Wattage, // thanh tien
                         CreatTime = DateTime.Now
 
                     });
@@ -101,5 +114,5 @@ namespace DVN.Controllers
         }
 
     }
-    
+
 }

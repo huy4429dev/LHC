@@ -43,7 +43,13 @@ namespace DVN.Services
             {
                 var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 var customerActives = db.Customers.Where(item => item.Status == true).ToList();
-                float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+                var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
+                float unitPrice = 0;
+                if (option != null)
+                {
+                    unitPrice = float.Parse(option.Value);
+                }
 
                 foreach (var item in customerActives)
                 {

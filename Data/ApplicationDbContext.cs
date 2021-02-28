@@ -43,5 +43,6 @@ namespace DVN.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<RegisterProduct> RegisterProducts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Option> Options { get; set; }
     }
 }

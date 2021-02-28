@@ -10,24 +10,25 @@ using System.Net.Http.Headers;
 using DVN.Models;
 using System.Security.Claims;
 using DVN.ViewModels;
+using System.Collections.Generic;
 
 namespace DVN.Admin.Controllers
 {
     [Route("admin/post")]
     public class PostController : Controller
     {
-        private ApplicationDbContext _context;
+        private ApplicationDbContext db;
 
         public PostController(
             ApplicationDbContext context
         )
         {
-            _context = context;
+            db = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var posts = await _context.Posts.OrderByDescending(item => item.Id)
+            var posts = await db.Posts.OrderByDescending(item => item.Id)
                                 .Select(item => new PostIndexViewModel
                                 {
                                     Id = item.Id,
@@ -40,6 +41,44 @@ namespace DVN.Admin.Controllers
             return View("Views/Admin/Post/Index.cshtml", posts);
         }
 
+        [HttpGet("search")]
+        public IActionResult SearchEmail(string query, DateTime? fillDate, int page = 1, int pageSize = 25)
+        {
+            var Posts = new List<PostIndexViewModel>();
+            var sql = db.Posts.Include(item => item.User).AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                query = "%" + query + "%";
+                sql = sql.Where(item => EF.Functions.ILike(item.Title, query) ||
+                                      EF.Functions.ILike(item.User.FullName, query)
+                               );
+            }
+
+            if (fillDate.HasValue)
+            {
+                sql = sql.Where(item => item.CreatedAt == fillDate);
+            }
+
+            Posts = sql
+                     .Select(item => new PostIndexViewModel
+                     {
+                         Id = item.Id,
+                         Title = item.Title,
+                         Description = item.Description,
+                         Author = item.User.FullName,
+                         CreatedAt = item.CreatedAt
+                     })
+                     .OrderByDescending(item => item.Id)
+                     .Skip((page - 1) * pageSize)
+                     .Take(pageSize)
+                     .ToList();
+
+            ViewBag.TotalPage = sql.Count() % pageSize == 0 ? sql.Count() / pageSize : sql.Count() / pageSize + 1;
+            ViewBag.CurentPage = page;
+
+            return View("/Views/Admin/Post/Index.cshtml", Posts);
+        }
 
         [HttpGet("create")]
         public IActionResult Create()
@@ -93,11 +132,11 @@ namespace DVN.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                
+
                 model.UserId = 2;
                 model.CreatedAt = DateTime.Now;
-                await _context.Posts.AddAsync(model);
-                await _context.SaveChangesAsync();
+                await db.Posts.AddAsync(model);
+                await db.SaveChangesAsync();
                 return Redirect("/admin/Post");
             }
 
@@ -109,16 +148,16 @@ namespace DVN.Admin.Controllers
         public async Task<IActionResult> Detail(int id)
         {
 
-            var post = await _context.Posts.Where(i => i.Id == id).Select(p => new Post
+            var post = await db.Posts.Where(i => i.Id == id).Select(p => new Post
             {
-                Id             = p.Id,
-                Title          = p.Title,
-                Description    = p.Description,
-                Content        = p.Content,
-                Thumbnail      = p.Thumbnail,
-                CreatedAt      = p.CreatedAt,
-                UpdatedAt      = p.UpdatedAt,
-                UserId         = p.UserId
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                Content = p.Content,
+                Thumbnail = p.Thumbnail,
+                CreatedAt = p.CreatedAt,
+                UpdatedAt = p.UpdatedAt,
+                UserId = p.UserId
             }).FirstAsync();
             if (post != null)
             {
@@ -133,7 +172,7 @@ namespace DVN.Admin.Controllers
         public async Task<IActionResult> Update([FromForm] Post model, int id)
         {
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await db.Posts.FindAsync(id);
 
             //  id not found --> err
 
@@ -147,7 +186,7 @@ namespace DVN.Admin.Controllers
                     post.Thumbnail = model.Thumbnail;
                     post.UserId = 2;
                     post.UpdatedAt = DateTime.Now;
-                    await _context.SaveChangesAsync();
+                    await db.SaveChangesAsync();
                 }
                 ViewBag.message = "Cập nhật thành công";
                 return View("Views/Admin/Post/Detail.cshtml", post);

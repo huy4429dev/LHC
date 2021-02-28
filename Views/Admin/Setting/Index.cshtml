@@ -1,0 +1,71 @@
+@{
+    Layout = "_LayoutAdmin";
+    ViewBag.Title = "Thiết lập";
+}
+@model Option
+
+    <div class="container-fluid">
+        <h4 class="mt-4">THIẾT LẬP</h4>
+    </div>
+    <hr>
+    <div class="container-fluid">
+        <ul class="nav nav-tabs">
+        <li><a class="active" data-toggle="tab" href="#menu1">Mức giá</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="menu1" class="tab-pane fade py-4 active show">
+            <p>Thiết lập mức giá điện.</p>
+            <div class="row">
+                <div class="col-3">
+                    <form action="/admin/setting" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="value" value="@Model.Value ">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Lưu">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+
+@section Css{
+    <link rel="stylesheet" href="~/common/css/jquery.dataTables.min.css">
+    <style>
+      .show-Content{
+        cursor: pointer;
+      }
+      .show-Content:hover{
+         color:blue;
+      }
+          .alert.alert-danger.validation-summary-valid {
+        display: none;
+    }
+
+    ul.nav.nav-tabs a {
+    text-transform: uppercase;
+    color: #495057;
+    }
+
+    ul.nav.nav-tabs {
+        margin-top: 20px;
+    }
+
+    ul.nav.nav-tabs li {
+        padding: 10px 5px;
+    }
+    
+        ul.nav.nav-tabs a.active {
+        color: #2196F3;
+        font-weight: 500;
+    }
+
+         ul.nav.nav-tabs li.active  {
+        border-bottom: 2px solid #2196F3;
+    }
+    </style>
+}

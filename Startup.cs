@@ -63,7 +63,7 @@ namespace DVN
                 var lastDayofMonth = DateTime.DaysInMonth(curentYear, curentMonth);
 
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"50 12 * * *"; // format min / hour / day / month / dayOfWeek
+                c.CronExpression = @"* * * * *"; // format min / hour / day / month / dayOfWeek
             });
        
         }

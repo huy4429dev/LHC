@@ -115,18 +115,29 @@ namespace DVN.Admin.Controllers
         [HttpPost("update/{id}")]
         public IActionResult Update(int id, [FromForm] Customer model)
         {
+
             SkipModelValidate("ConfirmPassword");
             SkipModelValidate("Username");
             SkipModelValidate("Status");
             SkipModelValidate("Password");
+            SkipModelValidate("BirthDate");
+
             if (ModelState.IsValid)
             {
-                var found = db.Customers.Find(id);
-                // check category found
 
+                var found = db.Customers.Find(id);
                 if (found == null)
                 {
                     ModelState.AddModelError("Found Customer", "Không tồn tại khách hàng");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    var checkBirthDate = ModelState.Keys.Select(item => item == "BirthDate");
+                    if (checkBirthDate != null)
+                    {
+                        model.BirthDate = found.BirthDate;
+                    }
                 }
 
                 found.Address = model.Address;

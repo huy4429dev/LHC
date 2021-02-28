@@ -56,7 +56,15 @@ namespace DVN.Controllers
                     model.Status = false;
                     db.Customers.Add(model);
                     db.SaveChanges();
-                    ViewData["CreateCustomerSuccess"] = "Đăng ký tài khoản thành công";
+                    TempData["CreateCustomerSuccess"] = "Đăng ký tài khoản thành công";
+                    HttpContext.Session.Set<Customer>("customer", new Customer
+                    {
+                        Username = model.Username,
+                        Id = model.Id,
+                    });
+
+                    return RedirectToAction("Profile", "Customer");
+
                 }
                 else
                 {
@@ -137,7 +145,11 @@ namespace DVN.Controllers
             var Data = new List<Order>();
             if (Customer != null)
             {
-                Data = db.Orders.Include(c => c.Customer).Where(o => o.CustomerId == Customer.Id).ToList();
+                Data = db.Orders.Include(c => c.Customer)
+                         .Include(u => u.Userverify)
+                         .Where(o => o.CustomerId == Customer.Id)
+                         .OrderByDescending(o => o.Id)
+                         .ToList();
             }
             return View("/Views/Customer/CheckOrder.cshtml", Data);
         }
@@ -255,12 +267,17 @@ namespace DVN.Controllers
                 {
                     ModelState.AddModelError("Found Customer", "Không tồn tại khách hàng");
                 }
+                if (!string.IsNullOrWhiteSpace(model.Password))
+                {
+                    found.Password = AesOperation.EncryptString("mot cai key khong thang nao biet", model.Password);
+                }
 
                 found.FullName = model.FirstName + " " + model.LastName;
                 found.LastName = model.LastName;
                 found.FirstName = model.FirstName;
                 found.Address = model.Address;
                 found.BirthDate = model.BirthDate;
+                found.Phone = model.Phone;
 
                 // add category
                 found.Status = true;
@@ -268,7 +285,7 @@ namespace DVN.Controllers
                 db.SaveChanges();
 
                 // alert success to view
-                TempData["message"] = "Cập nhật khách hàng thành công";
+                TempData["updateCustomerSuccess"] = "Cập nhật khách hàng thành công";
             }
 
             return RedirectToAction("Profile");

@@ -24,7 +24,13 @@ namespace DVN.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
+            float unitPrice = 0;
+            if (option != null)
+            {
+                unitPrice = float.Parse(option.Value);
+            }
 
             var data = db.RegisterProducts.Include(x => x.Customer).ToList();
 
@@ -34,7 +40,13 @@ namespace DVN.Admin.Controllers
         [HttpGet("{id}")]
         public IActionResult Detail(int id)
         {
-            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
+            float unitPrice = 0;
+            if (option != null)
+            {
+                unitPrice = float.Parse(option.Value);
+            }
 
             var data = db.RegisterProducts.Include(x => x.Customer).FirstOrDefault(item => item.Id == id);
 
@@ -47,10 +59,12 @@ namespace DVN.Admin.Controllers
             var found = db.RegisterProducts.Find(id);
             found.Status = model.Status;
             var customer = db.Customers.FirstOrDefault(item => item.Id == found.CustomerId);
-            if(model.Status == RegisterProductStatus.Success){
+            if (model.Status == RegisterProductStatus.Success)
+            {
                 customer.Status = true;
             }
-            else{
+            else
+            {
                 customer.Status = false;
             }
 
@@ -92,7 +106,13 @@ namespace DVN.Admin.Controllers
 
             // get unitprice
 
-            float unitPrice = float.Parse(configuration.GetSection("Contract").GetSection("Unitprice").Value);
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
+            float unitPrice = 0;
+            if (option != null)
+            {
+                unitPrice = float.Parse(option.Value);
+            }
 
             // get customer info login 
 

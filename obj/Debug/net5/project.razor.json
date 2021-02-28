@@ -15693,6 +15693,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Admin\\Setting\\Index.cshtml",
+      "TargetPath": "Views\\Admin\\Setting\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Admin\\Order\\Index.cshtml",
       "TargetPath": "Views\\Admin\\Order\\Index.cshtml",
       "FileKind": "mvc"

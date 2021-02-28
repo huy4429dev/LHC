@@ -36,12 +36,12 @@
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
                 class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" method="get" action="/admin/customer/search">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Tìm kiếm khách hàng..." aria-label="Search"
+                    <input class="form-control" name="query" type="text" placeholder="Tìm kiếm khách hàng..." aria-label="Search"
                     aria-describedby="basic-addon2" />
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </form>
@@ -123,6 +123,10 @@
                                 </nav>
                              
                             </div>
+                            <a class="nav-link collapsed" href="/admin/setting">
+                                <div class="sb-nav-link-icon"><i class="fas fa-wrench"></i></div>
+                                Thiết lập
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
