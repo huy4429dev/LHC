@@ -258,6 +258,7 @@ namespace DVN.Controllers
         public IActionResult Update(int id, [FromForm] Customer model)
         {
             SkipModelValidate("ConfirmPassword");
+            SkipModelValidate("Password");
             if (ModelState.IsValid)
             {
                 var found = db.Customers.Find(id);
@@ -278,6 +279,8 @@ namespace DVN.Controllers
                 found.Address = model.Address;
                 found.BirthDate = model.BirthDate;
                 found.Phone = model.Phone;
+                found.IdentityCard = model.IdentityCard;
+                found.Gender = model.Gender;
 
                 // add category
                 found.Status = true;

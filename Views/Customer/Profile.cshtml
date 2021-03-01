@@ -53,6 +53,15 @@ else
                     <span class="customer-info-label">
                         Điện thoại
                     </span>
+                    <span class="customer-info-label">
+                        CMND
+                    </span>
+                    <span class="customer-info-label">
+                        Ngày sinh
+                    </span>
+                    <span class="customer-info-label">
+                        Giới tính
+                    </span>
                 </div>
                 <div class="col-10">
                     <span class="customer-info-value">
@@ -66,6 +75,15 @@ else
                     </span>
                     <span class="customer-info-value">
                         @Model.Phone
+                    </span>
+                    <span class="customer-info-value">
+                        @Model.IdentityCard
+                    </span>
+                    <span class="customer-info-value">
+                        @Model.BirthDate.ToString("dd/MM/yyyy")
+                    </span>
+                     <span class="customer-info-value">
+                        @(Model.Gender == Gender.Male ? "Nam" : "Nữ")
                     </span>
                 </div>
             </div>
@@ -94,11 +112,15 @@ else
                 </div>
                <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Mật khẩu:</label>
-                    <input type="password" class="form-control" id="recipient-name" name="password"  value="******">
+                    <input type="password" class="form-control" id="recipient-name" name="password" placeholder="******">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Điện thoại:</label>
                     <input type="text" class="form-control" id="recipient-name" name="Phone" value="@Model.Phone">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">CMND:</label>
+                    <input type="text" class="form-control" id="recipient-name" name="IdentityCard" value="@Model.IdentityCard">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Email:</label>
@@ -111,6 +133,28 @@ else
                <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Ngày sinh:</label>
                     <input type="text" class="form-control" id="datepicker" name="BirthDate" value="@Model.BirthDate.ToString("dd/MM/yyyy")">
+                </div>
+                    <div class="form-check">
+                    @if(Model.Gender == Gender.Male){
+                        <input class="form-check-input" type="radio" name="Gender" id="exampleRadios1" value="1" checked>
+                    }
+                    else{
+                        <input class="form-check-input" type="radio" name="Gender" id="exampleRadios1" value="1">
+                    }
+                    <label class="form-check-label" for="exampleRadios1">
+                        Nam
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    @if(Model.Gender == Gender.FMale){
+                        <input class="form-check-input" type="radio" name="Gender" id="exampleRadios2" value="2" checked>
+                    }
+                    else{
+                        <input class="form-check-input" type="radio" name="Gender" id="exampleRadios2" value="2">
+                    } 
+                    <label class="form-check-label" for="exampleRadios2">
+                        Nữ
+                    </label>
                 </div>
         </div>
         <div class="modal-footer">

@@ -33,8 +33,7 @@ namespace DVN.Models
     public enum Gender : byte
     {
         Male,
-        FMale,
-        BD
+        FMale
     }
 
 

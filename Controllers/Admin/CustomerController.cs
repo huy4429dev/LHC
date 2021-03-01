@@ -145,6 +145,8 @@ namespace DVN.Admin.Controllers
                 found.BirthDate = model.BirthDate;
                 found.Phone = model.Phone;
                 found.Status = model.Status;
+                found.IdentityCard = model.IdentityCard;
+                found.Gender = model.Gender;
                 db.SaveChanges();
 
                 // alert success to view
