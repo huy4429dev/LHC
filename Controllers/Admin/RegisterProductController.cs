@@ -32,7 +32,11 @@ namespace DVN.Admin.Controllers
                 unitPrice = float.Parse(option.Value);
             }
 
-            var data = db.RegisterProducts.Include(x => x.Customer).ToList();
+            var data = db.RegisterProducts
+                         .Include(x => x.Customer)
+                         .OrderByDescending(item => item.Status)
+                         .ThenByDescending(item => item.CreatTime)
+                         .ToList();
 
             return View("/Views/Admin/RegisterProduct/Index.cshtml", data);
         }

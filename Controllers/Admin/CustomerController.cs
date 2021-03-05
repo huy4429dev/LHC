@@ -51,12 +51,13 @@ namespace DVN.Admin.Controllers
                                         || EF.Functions.ILike(item.Address, query)
                                         || EF.Functions.ILike(item.FullName, query)
                                         || EF.Functions.ILike(item.Phone, query)
+                                        || EF.Functions.ILike(item.IdentityCard, query)
                                );
             }
 
             if (fillDate.HasValue)
             {
-                sql = sql.Where(item => item.CreatTime == fillDate);
+                sql = sql.Where(item => item.CreatTime.Date == fillDate);
             }
 
             Customers = sql.OrderByDescending(item => item.Id)

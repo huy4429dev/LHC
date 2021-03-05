@@ -28,7 +28,10 @@ namespace DVN.Admin.Controllers
         public IActionResult Index(int page = 1, int pageSize = 25)
         {
             var query = db.Orders.AsQueryable();
-            var data = query.Include(x => x.Customer).ToList();
+            var data = query.Include(x => x.Customer)
+                            .OrderByDescending(item => item.Status)
+                            .ThenByDescending(item => item.CreatTime)
+                            .ToList();
             ViewBag.TotalPage = query.Count() % pageSize == 0 ? query.Count() / pageSize : query.Count() / pageSize + 1;
             ViewBag.CurentPage = page;
             return View("/Views/Admin/Order/Index.cshtml", data);
@@ -37,7 +40,7 @@ namespace DVN.Admin.Controllers
 
 
         [HttpGet("search")]
-        public IActionResult Search(string query, DateTime? fillDate, int page = 1, int pageSize = 1)
+        public IActionResult Search(string query, DateTime? fillDate, int page = 1, int pageSize = 25)
         {
             var sql = db.Orders.AsQueryable();
             if (!string.IsNullOrWhiteSpace(query))
@@ -52,7 +55,7 @@ namespace DVN.Admin.Controllers
 
             if (fillDate.HasValue)
             {
-                sql = sql.Where(item => item.CreatTime == fillDate);
+                sql = sql.Where(item => item.CreatTime.Date == fillDate);
             }
 
             var data = sql.Include(x => x.Customer)

@@ -45,6 +45,20 @@ namespace DVN.Controllers
             if (ModelState.IsValid)
             {
 
+
+                var foundEmail = db.Customers.Any(item => item.Email == model.Email);
+
+                if (foundEmail)
+                {
+                    ModelState.AddModelError("Account found", "Email đăng ký đã tồn tại");
+                }
+
+                var foundUsername = db.Customers.Any(item => item.Username == model.Username);
+                if (foundUsername)
+                {
+                    ModelState.AddModelError("Account found", "Tài khoản đã tồn tại");
+                }
+
                 var found = db.Customers.FirstOrDefault(item => item.Username == model.Username
                                                                 || item.Email == model.Email);
                 if (found == null)
@@ -65,11 +79,6 @@ namespace DVN.Controllers
 
                     return RedirectToAction("Profile", "Customer");
 
-                }
-                else
-                {
-
-                    ModelState.AddModelError("Account found", "Tài khoản đã tồn tại");
                 }
 
             }
