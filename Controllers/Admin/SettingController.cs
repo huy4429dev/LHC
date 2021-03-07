@@ -25,8 +25,26 @@ namespace DVN.Admin.Controllers
         public IActionResult Index()
         {
             var query = db.Options.AsQueryable();
-            var data = query
-                              .FirstOrDefault();
+            var Unitprice = query.Where(item => item.Type == "Unitprice")
+                                           .FirstOrDefault();
+            var UnitpriceRegister = query.Where(item => item.Type == "UnitpriceRegister")
+                                           .FirstOrDefault();
+            if(Unitprice  == null){
+                Unitprice = new Option {
+                    Value = "0"
+                };
+            }
+
+            if(UnitpriceRegister  == null){
+                UnitpriceRegister = new Option {
+                    Value = "0"
+                };
+            }
+            var data = new OptionView
+            {
+                Unitprice = float.Parse(Unitprice.Value),
+                UnitpriceRegister = float.Parse(UnitpriceRegister.Value),
+            };
 
             return View("Views/Admin/Setting/Index.cshtml", data);
         }
@@ -35,29 +53,57 @@ namespace DVN.Admin.Controllers
         public IActionResult SetOption(Option model)
         {
             var query = db.Options.AsQueryable();
-            var data = query.Where(item => item.Type == "Unitprice")
+            var Unitprice = query.Where(item => item.Type == "Unitprice")
                                            .FirstOrDefault();
+
+            var UnitpriceRegister = query.Where(item => item.Type == "UnitpriceRegister")
+                                           .FirstOrDefault();
+
 
             if (ModelState.IsValid)
             {
 
-                if (data == null)
+                if (Unitprice == null)
                 {
                     db.Options.Add(new Option
                     {
                         Type = "Unitprice",
-                        Value = model.Value
+                        Value = Request.Form["Unitprice"]
+
                     });
                 }
                 else
                 {
-                    data.Value = model.Value;
+                    Unitprice.Value = Request.Form["Unitprice"];
+                }
+
+                if (UnitpriceRegister == null)
+                {
+                    db.Options.Add(new Option
+                    {
+                        Type = "UnitpriceRegister",
+                        Value = Request.Form["UnitpriceRegister"]
+
+                    });
+                }
+                else
+                {
+                    UnitpriceRegister.Value = Request.Form["UnitpriceRegister"];
                 }
 
                 db.SaveChanges();
             }
 
+            var data = new OptionView
+            {
+                Unitprice = float.Parse(Unitprice.Value),
+                UnitpriceRegister = float.Parse(UnitpriceRegister.Value),
+            };
+
             return View("Views/Admin/Setting/Index.cshtml", data);
         }
+
     }
+
+
 }

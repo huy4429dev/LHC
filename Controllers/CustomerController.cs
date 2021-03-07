@@ -157,7 +157,8 @@ namespace DVN.Controllers
                 Data = db.Orders.Include(c => c.Customer)
                          .Include(u => u.Userverify)
                          .Where(o => o.CustomerId == Customer.Id)
-                         .OrderByDescending(o => o.Id)
+                         .OrderByDescending(item => item.Status)
+                         .ThenByDescending(item => item.CreatTime)
                          .ToList();
             }
             return View("/Views/Customer/CheckOrder.cshtml", Data);

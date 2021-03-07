@@ -46,9 +46,11 @@ namespace DVN.Admin.Controllers
             var sql = db.Customers.AsNoTracking();
             if (!string.IsNullOrWhiteSpace(query))
             {
+                query = query.Trim();
                 query = "%" + query + "%";
                 sql = sql.Where(item => EF.Functions.ILike(item.Username, query)
                                         || EF.Functions.ILike(item.Address, query)
+                                        || EF.Functions.ILike(item.Email, query)
                                         || EF.Functions.ILike(item.FullName, query)
                                         || EF.Functions.ILike(item.Phone, query)
                                         || EF.Functions.ILike(item.IdentityCard, query)
@@ -146,6 +148,8 @@ namespace DVN.Admin.Controllers
                 found.BirthDate = model.BirthDate;
                 found.Phone = model.Phone;
                 found.Status = model.Status;
+                found.BankName = model.BankName;
+                found.BankNumber = model.BankNumber;
                 found.IdentityCard = model.IdentityCard;
                 found.Gender = model.Gender;
                 db.SaveChanges();

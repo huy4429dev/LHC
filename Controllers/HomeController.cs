@@ -16,7 +16,10 @@ namespace DVN.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            ViewData["post"] = db.Posts.ToList();
+            ViewData["post"] = db.Posts
+                                  .OrderByDescending(item => item.CreatedAt)
+                                  .Take(3)
+                                  .ToList();
             return View("/Views/Home/Index.cshtml");
         }
 

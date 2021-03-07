@@ -33,6 +33,7 @@ namespace DVN.Admin.Controllers
                                 {
                                     Id = item.Id,
                                     Title = item.Title,
+                                    Thumbnail = item.Thumbnail,
                                     Description = item.Description,
                                     Author = item.User.FullName,
                                     CreatedAt = item.CreatedAt,
@@ -64,6 +65,7 @@ namespace DVN.Admin.Controllers
                      .Select(item => new PostIndexViewModel
                      {
                          Id = item.Id,
+                         Thumbnail = item.Thumbnail,
                          Title = item.Title,
                          Description = item.Description,
                          Author = item.User.FullName,
@@ -87,7 +89,6 @@ namespace DVN.Admin.Controllers
             return View("Views/Admin/Post/Create.cshtml");
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost("upload-thumbnail"), DisableRequestSizeLimit]
         public IActionResult UploadThumbnail()
         {
@@ -133,7 +134,7 @@ namespace DVN.Admin.Controllers
             if (ModelState.IsValid)
             {
 
-                model.UserId = 2;
+                model.UserId = 1;
                 model.CreatedAt = DateTime.Now;
                 await db.Posts.AddAsync(model);
                 await db.SaveChangesAsync();

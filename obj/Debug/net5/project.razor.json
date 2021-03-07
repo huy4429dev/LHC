@@ -15748,6 +15748,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\News\\Detail.cshtml",
+      "TargetPath": "Views\\News\\Detail.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Admin\\Report\\Revenue.cshtml",
       "TargetPath": "Views\\Admin\\Report\\Revenue.cshtml",
       "FileKind": "mvc"

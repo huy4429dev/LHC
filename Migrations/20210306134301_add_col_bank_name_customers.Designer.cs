@@ -3,15 +3,17 @@ using System;
 using DVN.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DVN.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210306134301_add_col_bank_name_customers")]
+    partial class add_col_bank_name_customers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +64,6 @@ namespace DVN.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("BankName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BankNumber")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("BirthDate")

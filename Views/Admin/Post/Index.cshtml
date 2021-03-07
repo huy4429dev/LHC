@@ -45,6 +45,8 @@
     <tr>
       <th class="th-sm" >#ID
       </th>
+      <th class="th-sm">
+      </th>
       <th class="th-sm">Tiêu đề
       </th>
       <th class="th-sm">Mô tả
@@ -60,13 +62,14 @@
     {
     <tr onclick="blogDetail(@item.Id)" style="cursor:pointer">
       <td>@item.Id</td>
-      <td>@(item.Title.Length > 30 ? item.Title.Substring(0,30) + "..." : item.Title )</td>
-      <td>@(item.Description.Length > 30 ? item.Description.Substring(0,30) + "..." : item.Description )</td>
+      <td style="width:100px"><img style="width:100px" src="@item.Thumbnail" alt=""></td>
+      <td style="width: 25%;">@(item.Title.Length > 30 ? item.Title.Substring(0,30) + "..." : item.Title )</td>
+      <td style="width: 25%;">@(item.Description.Length > 30 ? item.Description.Substring(0,30) + "..." : item.Description )</td>
       <td>
         @(item.Author ?? "Admin")
       </td>
-      <td>
-        @item.CreatedAt
+      <td class="text-center">
+        @item.CreatedAt.ToString("dd/MM/yyy hh:mm")
       </td>
     </tr>
         

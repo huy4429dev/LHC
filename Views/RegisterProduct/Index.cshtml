@@ -55,7 +55,9 @@
                             <a href="/khach-hang/dang-nhap" class="content-btn">Bấm vào đây để <b>đăng nhập</b></a>
                         </div>
                     }
-                    <h4>Thông tin đăng kí</h4>
+                        @if (Customer != null)
+                    {
+                             <h4>Thông tin đăng kí</h4>
                     <div class="row">
                         <div class="col-lg-6">
                             <label for="fir">Họ<span>*</span></label>
@@ -74,8 +76,16 @@
                             <input type="text" id="cun" name="Phone" value="@(CustomerInfo?.Phone)">
                         </div>
                         <div class="col-lg-12">
+                            <label for="cun">Tên ngân hàng<span>*</span></label>
+                            <input type="text" id="cun" name="BankNumber" value="@(CustomerInfo?.BankNumber)">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="cun">Số tài khoản<span>*</span></label>
+                            <input required type="text" id="cun" name="BankName" value="@(CustomerInfo?.BankName)">
+                        </div>
+                        <div class="col-lg-12">
                             <label for="street">Địa chỉ email<span>*</span></label>
-                            <input type="text" id="street" class="street-first" name="Email" value="@(CustomerInfo?.Email)">
+                            <input required type="text" id="street" class="street-first" name="Email" value="@(CustomerInfo?.Email)">
                         </div>
                         <div class="col-lg-12">
                             <label for="zip">Diện tích mái cần lắp đặt (m2) <span>*</span></label>
@@ -90,6 +100,8 @@
                             <input type="text" id="zip" name="Place">
                         </div>
                     </div>
+                    }
+                   
                 </div>
                 <div class="col-lg-6">
                     @if (Customer == null)
@@ -124,7 +136,6 @@
         wattage.addEventListener('keyup',function(){
             let total = unitPrice * wattage.value;
             amount.textContent = (total).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
-
            
         })
 

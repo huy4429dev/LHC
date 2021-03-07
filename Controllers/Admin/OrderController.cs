@@ -45,6 +45,7 @@ namespace DVN.Admin.Controllers
             var sql = db.Orders.AsQueryable();
             if (!string.IsNullOrWhiteSpace(query))
             {
+                query = query.Trim();
                 query = "%" + query + "%";
                 sql = sql.Where(item => EF.Functions.ILike(item.Customer.FullName, query) ||
                                         EF.Functions.ILike(item.Customer.Email, query) ||

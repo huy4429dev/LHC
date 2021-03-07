@@ -45,7 +45,7 @@ else
                             <th>Mã hóa đơn</th>
                             <th>Ngày tạo</th>
                             <th>Trạng thái</th>
-                            <th>Nhân viên thu</th>
+                            @* <th>Nhân viên thu</th> *@
                             <th>Số điện sử dụng</th>
                             <th>Thành tiền</th>
                         </tr>
@@ -61,14 +61,14 @@ else
                                 <td>DH @item.Id</td>
                                 <td>@item.CreatTime.ToString("dd-MM-yyyy")</td>
                                 <td> @(item.Status == OrderStatus.Success ? 
-                                        Html.Raw("<span style='width: 80px' class='badge badge-success'>Đã xử lý </span>") 
+                                        Html.Raw("<span style='width: 110px' class='badge badge-success'>Đã thanh toán </span>") 
                                         : item.Status == OrderStatus.NoProcess 
-                                         ?Html.Raw("<span style='width: 80px' class='badge badge-warning'> Chưa xử lý </span>") 
+                                         ?Html.Raw("<span style='width: 110px' class='badge badge-warning'> Chưa thanh toán </span>") 
                                         
                                         :
-                                        Html.Raw("<span style='width: 80px' class='badge badge-danger'> Hủy bỏ   </span>")  
+                                        Html.Raw("<span style='width: 110px' class='badge badge-danger'> Hủy bỏ   </span>")  
                                 )</td>
-                                <td>@(item.Userverify == null ? "___" : item.Userverify.FullName)</td>
+                                @* <td>@(item.Userverify == null ? "___" : item.Userverify.FullName)</td> *@
                                 <td>@item.UseValue KW</td>
                                 <td>@item.Amount.ToString("N3") đ</td>
                            </tr>

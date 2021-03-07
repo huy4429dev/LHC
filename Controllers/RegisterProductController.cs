@@ -23,7 +23,7 @@ namespace DVN.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+            var option = db.Options.Where(item => item.Type == "UnitpriceRegister").FirstOrDefault();
 
             float unitPrice = 0;
             if (option != null)
@@ -56,7 +56,7 @@ namespace DVN.Controllers
 
             // get unitprice
 
-            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+            var option = db.Options.Where(item => item.Type == "UnitpriceRegister").FirstOrDefault();
 
             float unitPrice = 0;
             if (option != null)
@@ -87,6 +87,8 @@ namespace DVN.Controllers
                     foundCustomer.Phone = model.Phone;
                     foundCustomer.Email = model.Email;
                     foundCustomer.Status = false;
+                    foundCustomer.BankNumber = HttpContext.Request.Form["BankName"];
+                    foundCustomer.BankName = HttpContext.Request.Form["BankNumber"];
 
 
                     db.RegisterProducts.Add(new RegisterProduct

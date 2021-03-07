@@ -2,7 +2,7 @@
     Layout = "_LayoutAdmin";
     ViewBag.Title = "Thiết lập";
 }
-@model Option
+@model OptionView
 
     <div class="container-fluid">
         <h4 class="mt-4">THIẾT LẬP</h4>
@@ -15,19 +15,27 @@
 
     <div class="tab-content">
         <div id="menu1" class="tab-pane fade py-4 active show">
+                    <form action="/admin/setting" method="post">
             <p>Thiết lập mức giá điện.</p>
             <div class="row">
                 <div class="col-3">
-                    <form action="/admin/setting" method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="value" value="@Model.Value ">
+                            <input type="text" class="form-control" name="Unitprice" value="@Model.Unitprice">
                         </div>
+                </div>
+            </div>
+            <p>Thiết lập mức giá đăng ký.</p>
+            <div class="row">
+                <div class="col-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="UnitpriceRegister" value="@Model.UnitpriceRegister">
+                        </div>
+                </div>
+            </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary btn-sm" value="Lưu">
                         </div>
                     </form>
-                </div>
-            </div>
         </div>
     </div>
     </div>

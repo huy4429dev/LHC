@@ -23,6 +23,8 @@ namespace DVN.Models
         [NotMapped]
         public string ConfirmPassword { get; set; }
         public string FullName { get; set; }
+        public string BankName { get; set; }
+        public string BankNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string IdentityCard { get; set; }
