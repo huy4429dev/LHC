@@ -83,7 +83,7 @@ namespace DVN.Admin.Controllers
         {
             var user = HttpContext.Session.Get<User>("user");
             var found = db.Orders.Find(id);
-            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+            var option   = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
             
             float unitPrice = 0;
             if(option != null){

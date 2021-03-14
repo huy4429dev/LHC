@@ -158,3 +158,7 @@ E:\project\c#\LHC2\LHC\obj\Debug\net5\DVN.pdb
 E:\project\c#\LHC2\LHC\obj\Debug\net5\DVN.genruntimeconfig.cache
 E:\project\c#\LHC2\LHC\obj\Debug\net5\Razor\Views\Admin\Setting\Index.cshtml.g.cs
 E:\project\c#\LHC2\LHC\obj\Debug\net5\Razor\Views\News\Detail.cshtml.g.cs
+E:\project\c#\LHC2\LHC\bin\Debug\net5\MailKit.dll
+E:\project\c#\LHC2\LHC\bin\Debug\net5\MimeKit.dll
+E:\project\c#\LHC2\LHC\bin\Debug\net5\BouncyCastle.Crypto.dll
+E:\project\c#\LHC2\LHC\obj\Debug\net5\Razor\Views\Customer\EmailConfirmSuccess.cshtml.g.cs

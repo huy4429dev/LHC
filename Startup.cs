@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using DVN.Data;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using DVN.Services;
+using DVN.Mail;
 
 namespace DVN
 {
@@ -38,6 +39,10 @@ namespace DVN
                 options.Cookie.IsEssential = true;
             });
 
+            var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
+            
+            services.Configure<MailSettings>(mailsettings);
+            services.AddTransient<ISendMailService, SendMailService>();
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddMvc();
@@ -63,9 +68,9 @@ namespace DVN
                 var lastDayofMonth = DateTime.DaysInMonth(curentYear, curentMonth);
 
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"10 * * * *"; // format min / hour / day / month / dayOfWeek
+                c.CronExpression = @"* * * * *"; // format min / hour / day / month / dayOfWeek
             });
-       
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

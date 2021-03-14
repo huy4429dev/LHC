@@ -15633,6 +15633,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Customer\\EmailConfirmSuccess.cshtml",
+      "TargetPath": "Views\\Customer\\EmailConfirmSuccess.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Admin\\Report\\EmployeeReport.cshtml",
       "TargetPath": "Views\\Admin\\Report\\EmployeeReport.cshtml",
       "FileKind": "mvc"

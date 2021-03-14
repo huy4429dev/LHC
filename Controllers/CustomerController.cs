@@ -11,18 +11,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ClosedXML.Excel;
 using System.IO;
+using DVN.Mail;
+using System.Threading.Tasks;
 
 namespace DVN.Controllers
 {
     [Route("/khach-hang")]
     public class CustomerController : Controller
     {
-
+        private readonly ISendMailService _emailSender;
         private ApplicationDbContext db;
 
-        public CustomerController(ApplicationDbContext _db)
+        public CustomerController(ApplicationDbContext _db, ISendMailService emailSender)
         {
             db = _db;
+            _emailSender = emailSender;
         }
 
 
@@ -164,18 +167,39 @@ namespace DVN.Controllers
             return View("/Views/Customer/CheckOrder.cshtml", Data);
         }
 
+        [HttpGet("xac-nhan/{email}")]
+        public IActionResult CustomerEmailConfirm(string email)
+        {
+            var found = db.CustomerEmails.FirstOrDefault(item => item.Email == email);
+            found.Status = true;
+            db.SaveChanges();
+            ViewData["email"] = email;
+            return View("/Views/Customer/EmailConfirmSuccess.cshtml");
+        }
 
 
         [HttpPost("gui-email")]
-        public IActionResult SendEmail([FromBody] CustomerEmail model)
+        public async Task<IActionResult> SendEmail([FromBody] CustomerEmail model)
         {
-
             if (ModelState.IsValid)
             {
-
+                var host = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString();
                 model.CreatedTime = DateTime.Now;
+                int id = db.CustomerEmails.OrderByDescending(item => item.CreatedTime).FirstOrDefault()?.Id ?? 1;
+
                 db.CustomerEmails.Add(model);
                 db.SaveChanges();
+
+
+                // Gửi email    
+                MailContent content = new MailContent
+                {
+                    To = model.Email,
+                    Subject = "Xác nhận địa chỉ Email",
+                    Body = $"Hãy xác nhận địa chỉ email bằng cách <a href='{host}/khach-hang/xac-nhan/{model.Email}'>Bấm vào đây</a>."
+                };
+
+                await _emailSender.SendMail(content);
             }
 
             else
@@ -191,7 +215,7 @@ namespace DVN.Controllers
 
             return Ok(new
             {
-                success = $"Chúng tôi sẽ gửi lại mail vào địa chỉ {model.Email} của bạn",
+                success = $"Chúng tôi sẽ gửi lại mail vào địa chỉ {model.Email} của bạn vui lòng xác nhận",
                 data = model
             });
 
