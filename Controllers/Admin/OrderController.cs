@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using ClosedXML.Excel;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace DVN.Admin.Controllers
 {
@@ -50,7 +51,7 @@ namespace DVN.Admin.Controllers
                 sql = sql.Where(item => EF.Functions.ILike(item.Customer.FullName, query) ||
                                         EF.Functions.ILike(item.Customer.Email, query) ||
                                         EF.Functions.ILike(item.Customer.Username, query) ||
-                                        EF.Functions.ILike(item.Customer.Phone, query) 
+                                        EF.Functions.ILike(item.Customer.Phone, query)
                                );
             }
 
@@ -83,11 +84,12 @@ namespace DVN.Admin.Controllers
         {
             var user = HttpContext.Session.Get<User>("user");
             var found = db.Orders.Find(id);
-            var option   = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
-            
+            var option = db.Options.Where(item => item.Type == "Unitprice").FirstOrDefault();
+
             float unitPrice = 0;
-            if(option != null){
-               unitPrice = float.Parse(option.Value);
+            if (option != null)
+            {
+                unitPrice = float.Parse(option.Value);
             }
             var RegisterProduct = db.RegisterProducts.FirstOrDefault(item => item.CustomerId == found.CustomerId);
             found.Status = model.Status;
@@ -123,29 +125,66 @@ namespace DVN.Admin.Controllers
         {
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add("Orders");
-                var currentRow = 1;
-                worksheet.Cell(currentRow, 1).Value = "Id";
-                worksheet.Cell(currentRow, 2).Value = "Tên khách hàng";
-                worksheet.Cell(currentRow, 3).Value = "Điện thoại";
-                worksheet.Cell(currentRow, 4).Value = "Email";
-                worksheet.Cell(currentRow, 5).Value = "Địa chỉ";
-                worksheet.Cell(currentRow, 6).Value = "Đơn giá";
-                worksheet.Cell(currentRow, 7).Value = "Số điện sử dụng";
-                worksheet.Cell(currentRow, 8).Value = "Thành tiền";
-                worksheet.Cell(currentRow, 9).Value = "Trạng thái";
-
                 var order = db.Orders.Include(o => o.Customer).FirstOrDefault(o => o.Id == id);
+
+                var worksheet = workbook.Worksheets.Add("Orders");
+                worksheet.Style.Font.FontName = "Arial";
+
+                var rangeBrand = worksheet.Range(1, 1, 1, 6);
+                rangeBrand.Value = "Công ty điện lực Điện Biên - Chi nhánh tổng công ty điện lực miền Bắc";
+                rangeBrand.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                rangeBrand.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                rangeBrand.Merge();
+
+                var rangeNameCompany = worksheet.Range(2, 1, 2, 6);
+
+                rangeNameCompany.Value = "Điện Lực Thành Phố Điện Biên Phủ";
+                rangeNameCompany.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                rangeNameCompany.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                rangeNameCompany.Style.Font.Bold = true;
+                rangeNameCompany.Merge();
+
+                var range = worksheet.Range(4, 4, 5, 15);
+                range.Value = "BẢNG KÊ THANH TOÁN TIỀN ĐIỆN MẶT TRỜI MÁI NHÀ";
+                range.Style.Font.FontSize = 25;
+                range.Style.Font.Bold = true;
+                range.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                range.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
+                var range2 = worksheet.Range(6, 4, 6, 15);
+                range2.Value = "Ngày tạo đơn: " + order.CreatTime.ToString("dd/MM/yyyy");
+                range2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                range2.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
+                range.Merge();
+                range2.Merge();
+                var currentRow = 8;
+                worksheet.Row(currentRow).Style.Font.Bold = true;
+                worksheet.Cell(currentRow, 6).Value = "#";
+                worksheet.Cell(currentRow, 7).Value = "Tên khách hàng";
+                worksheet.Cell(currentRow, 8).Value = "Điện thoại";
+                worksheet.Cell(currentRow, 9).Value = "Email";
+                // worksheet.Cell(currentRow, 10).Value = "Địa chỉ";
+                worksheet.Cell(currentRow, 10).Value = "Đơn giá";
+                worksheet.Cell(currentRow, 11).Value = "Số điện sử dụng";
+                worksheet.Cell(currentRow, 12).Value = "Thành tiền";
+                worksheet.Cell(currentRow, 13).Value = "Trạng thái";
+
                 currentRow++;
-                worksheet.Cell(currentRow, 1).Value = order.Id;
-                worksheet.Cell(currentRow, 2).Value = order.Customer.FullName;
-                worksheet.Cell(currentRow, 3).Value = order.Customer.Phone + "\\";
-                worksheet.Cell(currentRow, 4).Value = order.Customer.Email;
-                worksheet.Cell(currentRow, 5).Value = order.Customer.Address;
-                worksheet.Cell(currentRow, 7).Value = order.UnitPrice;
-                worksheet.Cell(currentRow, 7).Value = order.UseValue;
-                worksheet.Cell(currentRow, 8).Value = order.Amount;
-                worksheet.Cell(currentRow, 9).Value = order.Status == OrderStatus.Success ? "Đã xử lý" : "Chưa xử lý";
+                worksheet.Cell(currentRow, 6).Value = "DH" + order.Id;
+                worksheet.Cell(currentRow, 7).Value = order.Customer.FullName;
+                worksheet.Cell(currentRow, 8).Value = order.Customer.Phone + "\\";
+                worksheet.Cell(currentRow, 9).Value = order.Customer.Email;
+                // worksheet.Cell(currentRow, 10).Value = order.Customer.Address;
+                worksheet.Cell(currentRow, 10).Value = order.UnitPrice;
+                worksheet.Cell(currentRow, 11).Value = order.UseValue;
+                worksheet.Cell(currentRow, 12).Value = order.Amount;
+                worksheet.Cell(currentRow, 13).Value = order.Status == OrderStatus.Success ? "Đã xử lý" : "Chưa xử lý";
+                var range3 = worksheet.Range(8, 6, currentRow, 13);
+                range3.Style.Border.SetOutsideBorder(XLBorderStyleValues.Thick);
+                worksheet.Rows().AdjustToContents();
+                worksheet.Columns().AdjustToContents();
+
 
                 using (var stream = new MemoryStream())
                 {

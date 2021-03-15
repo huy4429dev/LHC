@@ -15668,6 +15668,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Admin\\Report\\RevenuePin.cshtml",
+      "TargetPath": "Views\\Admin\\Report\\RevenuePin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\project\\c#\\LHC2\\LHC\\Views\\Customer\\Register.cshtml",
       "TargetPath": "Views\\Customer\\Register.cshtml",
       "FileKind": "mvc"

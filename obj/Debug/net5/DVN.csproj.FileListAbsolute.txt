@@ -162,3 +162,4 @@ E:\project\c#\LHC2\LHC\bin\Debug\net5\MailKit.dll
 E:\project\c#\LHC2\LHC\bin\Debug\net5\MimeKit.dll
 E:\project\c#\LHC2\LHC\bin\Debug\net5\BouncyCastle.Crypto.dll
 E:\project\c#\LHC2\LHC\obj\Debug\net5\Razor\Views\Customer\EmailConfirmSuccess.cshtml.g.cs
+E:\project\c#\LHC2\LHC\obj\Debug\net5\Razor\Views\Admin\Report\RevenuePin.cshtml.g.cs

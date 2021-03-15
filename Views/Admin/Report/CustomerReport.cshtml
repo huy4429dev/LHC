@@ -112,7 +112,7 @@
                         <td>${record.totalOldCustomer}</td>
                         <td>${record.totalCustomer}</td>
                         <td>${record.total}</td>
-                        <td>${record.total / ((record.totalNewCustomer + record.totalOldCustomer) == 0 ? 1 : (record.totalNewCustomer + record.totalOldCustomer)) * 100}</td>
+                        <td>${Math.floor(record.total / ((record.totalNewCustomer + record.totalOldCustomer) == 0 ? 1 : (record.totalNewCustomer + record.totalOldCustomer))) * 100}</td>
                     </tr>` )
             };
 
@@ -124,7 +124,7 @@
                         <td>${record.totalOldCustomer}</td>
                         <td>${record.totalCustomer}</td>
                         <td>${record.total}</td>
-                        <td>${record.total / ((record.totalNewCustomer + record.totalOldCustomer) == 0 ? 1 : (record.totalNewCustomer + record.totalOldCustomer)) * 100 / record.length}</td>
+                        <td>${Math.floor(record.total / ((record.totalNewCustomer + record.totalOldCustomer) == 0 ? 1 : (record.totalNewCustomer + record.totalOldCustomer))) * 100 / record.length}</td>
                     </tr>` )
             };
 

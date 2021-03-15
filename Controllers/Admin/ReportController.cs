@@ -50,6 +50,7 @@ namespace DVN.Admin.Controllers
             return View("/Views/Admin/Report/OrderReport.cshtml");
         }
 
+
         [HttpGet("order/ajax")]
         public IActionResult GetDataOrderReport(DateTime toDate, DateTime fromDate)
         {
@@ -80,6 +81,7 @@ namespace DVN.Admin.Controllers
                 data
             });
         }
+
 
         [HttpGet("order/excel")]
         public IActionResult ExportExcelReportOrder(DateTime? fromDate = null, DateTime? toDate = null)
@@ -149,6 +151,67 @@ namespace DVN.Admin.Controllers
             }
         }
 
+        [HttpGet("revenue")]
+        public IActionResult RevenueReport(DateTime FromDate, DateTime ToDate)
+        {
+
+            ViewBag.Data = db.RegisterProducts.Select(o => new
+            {
+                o.CreatTime,
+                o.Status,
+                o.Amount,
+                CustomerId = o.CustomerId
+            })
+            .GroupBy(g => g.CreatTime.Date)
+            .Select(g => new
+            {
+                Date = g.Key,
+                Total = g.Count(),
+                TotalOrdrerSuccess = g.Sum(i => i.Status == RegisterProductStatus.Success ? i.Amount : 0),
+                TotalOrdrerDispose = 0,
+                TotalOrdrerBorrowed = 0,
+                TotalOrdrerNoProcess = 0,
+                TotalOrdrerOverdue = 0,
+                TotalCustomer = g.Select(o => o.CustomerId).Distinct().Count()
+            });
+
+
+            return View("/Views/Admin/Report/Revenue.cshtml");
+        }
+        [HttpGet("revenue/ajax")]
+        public IActionResult RevenueReportAjax(DateTime toDate, DateTime fromDate)
+        {
+
+            var data = db.RegisterProducts
+            .Where(item => item.CreatTime > toDate && item.CreatTime < fromDate)
+            .Select(o => new
+            {
+                o.CreatTime,
+                o.Status,
+                o.Amount,
+                CustomerId = o.CustomerId
+            })
+            .GroupBy(g => g.CreatTime.Date)
+            .Select(g => new
+            {
+                Date = g.Key,
+                Total = g.Count(),
+                TotalOrdrerSuccess = g.Sum(i => i.Status == RegisterProductStatus.Success ? i.Amount : 0),
+                TotalOrdrerDispose = 0,
+                TotalOrdrerBorrowed = 0,
+                TotalOrdrerNoProcess = 0,
+                TotalOrdrerOverdue = 0,
+                TotalCustomer = g.Select(o => o.CustomerId).Distinct().Count()
+            });
+
+
+            return Ok(new
+            {
+                data
+            });
+        }
+
+
         [HttpGet("customer")]
         public IActionResult CustomerReport(DateTime FromDate, DateTime ToDate)
         {
@@ -179,12 +242,12 @@ namespace DVN.Admin.Controllers
             var data = db.Orders
             .Where(item => item.CreatTime > toDate && item.CreatTime < fromDate)
            .Select(o => new
-            {
-                o.Status,
-                o.CreatTime,
-                CustomerId = o.CustomerId,
-                Customer = o.Customer
-            })
+           {
+               o.Status,
+               o.CreatTime,
+               CustomerId = o.CustomerId,
+               Customer = o.Customer
+           })
             .GroupBy(g => g.CreatTime)
             .Select(g => new
             {
@@ -211,7 +274,7 @@ namespace DVN.Admin.Controllers
             {
                 o.CreatTime,
                 o.Status,
-                CustomerId = o.CustomerId, 
+                CustomerId = o.CustomerId,
                 o.Userverify
             })
             .GroupBy(g => g.Userverify.Username)
